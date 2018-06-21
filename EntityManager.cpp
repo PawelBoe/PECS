@@ -1,0 +1,44 @@
+//
+// Created by Pawel Boening on 17/06/18.
+//
+
+#include "EntityManager.h"
+
+namespace pecs
+{
+
+    EntityManager::EntityManager()
+    {
+
+    }
+
+    Entity EntityManager::create_entity()
+    {
+        EntityIndex index;
+
+        if (_free_list.empty()) {
+            index = _index_counter++;
+            _entity_version.push_back(1);
+        } else {
+            index = _free_list.back();
+            _free_list.pop_back();
+        }
+
+        return Entity(index, _entity_version[index]);
+    }
+
+    bool EntityManager::exists_entity(Entity entity)
+    {
+        return _entity_version[entity.index()] == entity.version();
+    }
+
+    void EntityManager::remove_entity(Entity entity)
+    {
+        if (exists_entity(entity)) {
+            EntityIndex index = entity.index();
+            _entity_version[index] += 1;
+            _free_list.push_back(index);
+        }
+    }
+
+}
