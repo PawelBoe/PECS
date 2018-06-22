@@ -12,7 +12,7 @@ namespace pecs
 
     }
 
-    Entity EntityManager::create_entity()
+    Entity EntityManager::create()
     {
         EntityIndex index;
 
@@ -27,14 +27,14 @@ namespace pecs
         return Entity(index, _entity_version[index]);
     }
 
-    bool EntityManager::exists_entity(Entity entity)
+    bool EntityManager::exists(Entity entity)
     {
         return _entity_version[entity.index()] == entity.version();
     }
 
-    void EntityManager::remove_entity(Entity entity)
+    void EntityManager::remove(Entity entity)
     {
-        if (exists_entity(entity)) {
+        if (exists(entity)) {
             EntityIndex index = entity.index();
             _entity_version[index] += 1;
             _free_list.push_back(index);

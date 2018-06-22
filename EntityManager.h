@@ -29,9 +29,9 @@ namespace pecs
     public:
         EntityManager();
 
-        Entity create_entity();
-        bool exists_entity(Entity entity);
-        void remove_entity(Entity entity);
+        Entity create();
+        bool exists(Entity entity);
+        void remove(Entity entity);
 
     private:
         EntityIndex _index_counter;

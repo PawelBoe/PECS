@@ -1,24 +1,22 @@
 cmake_minimum_required(VERSION 3.10)
 project(ECS)
 
-set(CMAKE_CXX_STANDARD 17)
+set(CMAKE_CXX_FLAGS "-std=c++14 -lsfml-graphics -lsfml-system -lsfml-window  -lsfml-audio")
 
 add_executable(
         ECS
-        main.cpp
+        test.cpp
         EntityManager.cpp
         EntityManager.h
         EntityComponentSystem.cpp
         EntityComponentSystem.h
-        ComponentSystems/ComponentSystem.h
-        ComponentSystems/ComponentSystemBase.h
-        ComponentSystems/ComponentBase.h
-        ComponentSystems/ComponentDummy.h
-        ComponentSystems/ComponentBase.cpp
-        ComponentSystems/ComponentDummy.cpp
+        ComponentSystems/System.h
+        ComponentSystems/SystemBase.h
         MessageManager.cpp
         MessageManager.h
-        ComponentManager.cpp
-        ComponentManager.h
+        SystemManager.cpp
+        SystemManager.h
         Entity.h
-        Entity.cpp)
+        Entity.cpp
+        example.cpp
+        ComponentSystems/SystemBase.cpp)

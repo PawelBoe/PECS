@@ -7,19 +7,9 @@
 namespace pecs
 {
 
-    Entity EntityComponentSystem::create_entity()
+    EntityComponentSystem::EntityComponentSystem()
+            : _systems(_entities, _messages)
     {
-        return _entityManager.create_entity();
-    }
 
-    bool EntityComponentSystem::exists_entity(Entity entity)
-    {
-        return _entityManager.exists_entity(entity);
     }
-
-    void EntityComponentSystem::delete_entity(Entity entity)
-    {
-        _entityManager.remove_entity(entity);
-    }
-
 }
