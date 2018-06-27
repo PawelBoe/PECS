@@ -11,22 +11,18 @@ class RenderSystem : public pecs::System<RenderSystem>
 public:
     RenderSystem(sf::RenderTarget &target)
     {
-
     }
 
     void _assign(pecs::Entity entity)
     {
-
     }
 
     void _remove(pecs::Entity entity)
     {
-
     }
 
     void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
     {
-
     }
 };
 
@@ -35,7 +31,6 @@ class PositionSystem : public pecs::System<PositionSystem>
 public:
     PositionSystem()
     {
-
     }
 
     void _assign(pecs::Entity entity, int x, int y)
@@ -45,12 +40,10 @@ public:
 
     void _remove(pecs::Entity entity)
     {
-
     }
 
     void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
     {
-
     }
 
 };
@@ -60,22 +53,18 @@ class ParticleSystem : public pecs::System<ParticleSystem>
 public:
     ParticleSystem(int particle_count)
     {
-
     }
 
     void _assign(pecs::Entity entity)
     {
-
     }
 
     void _remove(pecs::Entity entity)
     {
-
     }
 
     void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
     {
-
     }
 };
 
@@ -115,10 +104,6 @@ public:
     {
         _systems.update<RenderSystem>(dt);
     }
-
-private:
-
-
 };
 
 
