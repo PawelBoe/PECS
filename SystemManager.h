@@ -17,14 +17,11 @@ namespace pecs
     class SystemManager
     {
     public:
-        SystemManager(EntityManager &entity_manager, MessageManager &message_manager);
+        SystemManager(EntityManager &entities, MessageManager &messages);
         ~SystemManager();
 
         template <typename T, typename ... Args>
         void add(Args && ... args);
-
-        template <typename T>
-        T* system();
 
         template <typename T, typename ... Args>
         void assign(Entity entity, Args && ... args);
@@ -36,6 +33,9 @@ namespace pecs
         void update(float dt);
 
     private:
+        template <typename T>
+        T* system();
+
         EntityManager &_entities;
         MessageManager &_messages;
         std::unordered_map<SystemBase::SystemId, SystemBase*> _systems;
@@ -45,12 +45,6 @@ namespace pecs
     void SystemManager::add(Args &&... args)
     {
         _systems[T::systemId()] = new T(std::forward<Args>(args) ...);
-    }
-
-    template<typename T>
-    T *SystemManager::system()
-    {
-        return (T*)(_systems[T::systemId()]);
     }
 
     template<typename T, typename... Args>
@@ -68,9 +62,14 @@ namespace pecs
     template<typename T>
     void SystemManager::update(float dt)
     {
-        system<T>()->update(_entities, _messages, dt);
+        system<T>()->update(dt);
     }
 
+    template<typename T>
+    T *SystemManager::system()
+    {
+        return (T*)(_systems[T::systemId()]);
+    }
 }
 
 

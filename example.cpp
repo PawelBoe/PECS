@@ -21,7 +21,7 @@ public:
     {
     }
 
-    void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
+    void _update(float dt)
     {
     }
 };
@@ -42,7 +42,7 @@ public:
     {
     }
 
-    void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
+    void _update(float dt)
     {
     }
 
@@ -63,7 +63,7 @@ public:
     {
     }
 
-    void _update(pecs::EntityManager &entities, pecs::MessageManager &messages, float dt)
+    void _update(float dt)
     {
     }
 };

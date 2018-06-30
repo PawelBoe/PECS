@@ -16,14 +16,13 @@ namespace pecs
     class System : public SystemBase
     {
     public:
-        ~System() = default;
+        ~System() override = default;
 
         template <typename ... Args>
         void assign(Entity entity, Args && ... args);
 
         void remove(Entity entity);
-        void update(EntityManager &entities,
-                    MessageManager &messages, float dt);
+        void update(float dt);
 
         static SystemId systemId();
     };
@@ -42,10 +41,9 @@ namespace pecs
     }
 
     template<typename T>
-    void System<T>::update(EntityManager &entities,
-                           MessageManager &messages, float dt)
+    void System<T>::update(float dt)
     {
-        static_cast<T*>(this)->_update(entities, messages, dt);
+        static_cast<T*>(this)->_update(dt);
     }
 
     template<typename T>

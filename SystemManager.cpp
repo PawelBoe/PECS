@@ -7,9 +7,9 @@
 namespace pecs
 {
 
-    SystemManager::SystemManager(EntityManager &entity_manager, MessageManager &message_manager)
-            : _entities(entity_manager),
-              _messages(message_manager)
+    SystemManager::SystemManager(EntityManager &entities, MessageManager &messages)
+            : _entities(entities),
+              _messages(messages)
     {
     }
 

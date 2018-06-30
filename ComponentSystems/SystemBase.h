@@ -17,9 +17,9 @@ namespace pecs
     {
     public:
         typedef size_t SystemId;
-
         virtual ~SystemBase() = default;
 
+    protected:
         static SystemId system_counter;
     };
 
