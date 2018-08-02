@@ -13,6 +13,11 @@ namespace pecs
 
     }
 
+    EntityId Entity::id()
+    {
+        return _id;
+    }
+
     EntityIndex Entity::index()
     {
         return EntityIndex(_id >> 16U);

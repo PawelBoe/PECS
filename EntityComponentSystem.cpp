@@ -8,7 +8,6 @@ namespace pecs
 {
 
     EntityComponentSystem::EntityComponentSystem()
-            : _systems(_entities, _messages)
     {
 
     }

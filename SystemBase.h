@@ -6,17 +6,13 @@
 #define ECS_COMPONENTSYSTEMBASE_H
 
 
-#include "../Entity.h"
-#include "../EntityManager.h"
-#include "../MessageManager.h"
-
 namespace pecs
 {
 
     class SystemBase
     {
     public:
-        typedef size_t SystemId;
+        typedef int SystemId;
         virtual ~SystemBase() = default;
 
     protected:

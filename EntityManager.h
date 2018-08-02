@@ -9,17 +9,6 @@
 #include <queue>
 #include "Entity.h"
 
-/*
- *
- * Requirements
- * - ordered
- * - tightly packed
- * - unique
- * - exists in O(1)
- * - create in O(1)
- * - remove in O(1)
- *
- */
 
 namespace pecs
 {
@@ -34,7 +23,7 @@ namespace pecs
         void remove(Entity entity);
 
     private:
-        EntityIndex _index_counter;
+        EntityIndex _index_counter = 0;
         std::vector<EntityIndex> _free_list;
         std::vector<EntityVersion> _entity_version;
     };

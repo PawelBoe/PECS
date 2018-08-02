@@ -8,7 +8,7 @@
 
 #include <unordered_map>
 #include "EntityManager.h"
-#include "MessageManager.h"
+#include "ComponentManager.h"
 #include "SystemManager.h"
 
 namespace pecs
@@ -19,11 +19,20 @@ namespace pecs
     public:
         EntityComponentSystem();
 
+        template <typename T>
+        void update(float dt);
+
     protected:
         EntityManager _entities;
-        MessageManager _messages;
+        ComponentManager _components;
         SystemManager _systems;
     };
+
+    template<typename T>
+    void EntityComponentSystem::update(float dt)
+    {
+        _systems.update<T>(_entities, _components, dt);
+    }
 
 }
 

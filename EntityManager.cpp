@@ -24,7 +24,7 @@ namespace pecs
             _free_list.pop_back();
         }
 
-        return Entity(index, _entity_version[index]);
+        return {index, _entity_version[index]};
     }
 
     bool EntityManager::exists(Entity entity)

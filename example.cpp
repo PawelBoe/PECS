@@ -13,96 +13,77 @@ public:
     {
     }
 
-    void _assign(pecs::Entity entity)
+    void _update(pecs::EntityManager &entities, pecs::ComponentManager &components, float dt)
     {
     }
-
-    void _remove(pecs::Entity entity)
-    {
-    }
-
-    void _update(float dt)
-    {
-    }
-};
-
-class PositionSystem : public pecs::System<PositionSystem>
-{
-public:
-    PositionSystem()
-    {
-    }
-
-    void _assign(pecs::Entity entity, int x, int y)
-    {
-
-    }
-
-    void _remove(pecs::Entity entity)
-    {
-    }
-
-    void _update(float dt)
-    {
-    }
-
 };
 
 class ParticleSystem : public pecs::System<ParticleSystem>
 {
 public:
-    ParticleSystem(int particle_count)
+    ParticleSystem()
     {
     }
 
-    void _assign(pecs::Entity entity)
+    void _update(pecs::EntityManager &entities, pecs::ComponentManager &components, float dt)
     {
     }
+};
 
-    void _remove(pecs::Entity entity)
-    {
-    }
+struct ParticleComponent
+{
+    int particles;
+};
 
-    void _update(float dt)
-    {
-    }
+struct PositionComponent
+{
+    int x;
+    int y;
 };
 
 
 class Application : public pecs::EntityComponentSystem
 {
 public:
-    explicit Application(sf::RenderTarget &target)
+    Application(sf::RenderTarget &target)
     {
+        _systems.add<ParticleSystem>();
         _systems.add<RenderSystem>(target);
-        _systems.add<ParticleSystem>(500);
-        _systems.add<PositionSystem>();
 
-        auto e0 = _entities.create();
-        _systems.assign<RenderSystem>(e0);
-        _systems.assign<ParticleSystem>(e0);
-        _systems.assign<PositionSystem>(e0, 100, 100);
+        _components.add<PositionComponent>();
+        _components.add<ParticleComponent>();
 
-        auto e1 = _entities.create();
-        _systems.assign<RenderSystem>(e1);
-        _systems.assign<ParticleSystem>(e1);
-        _systems.assign<PositionSystem>(e1, 300, 300);
+        pecs::Entity e0 = _entities.create();
+        _components.create<PositionComponent>(e0);
+        _components.get<PositionComponent>(e0).x = 100;
+        _components.get<PositionComponent>(e0).x = 100;
+        _components.create<ParticleComponent>(e0);
+        _components.get<ParticleComponent>(e0).particles = 100;
 
-        auto e2 = _entities.create();
-        _systems.assign<RenderSystem>(e2);
-        _systems.assign<ParticleSystem>(e2);
-        _systems.assign<PositionSystem>(e2, 500, 500);
+        pecs::Entity e1 = _entities.create();
+        _components.create<PositionComponent>(e1);
+        _components.get<PositionComponent>(e1).x = 300;
+        _components.get<PositionComponent>(e1).y = 300;
+        _components.create<ParticleComponent>(e1);
+        _components.get<ParticleComponent>(e1).particles = 300;
+
+        pecs::Entity e2 = _entities.create();
+        _components.create<PositionComponent>(e2);
+        _components.get<PositionComponent>(e2).x = 500;
+        _components.get<PositionComponent>(e2).y = 500;
+        _components.create<ParticleComponent>(e2);
+        _components.get<ParticleComponent>(e2).particles = 500;
     }
 
-    void update(float dt)
+    void simulate(float dt)
     {
-        _systems.update<PositionSystem>(dt);
-        _systems.update<ParticleSystem>(dt);
+        update<ParticleSystem>(dt);
+        update<ParticleSystem>(dt);
     }
 
     void render(float dt)
     {
-        _systems.update<RenderSystem>(dt);
+        update<RenderSystem>(dt);
     }
 };
 
@@ -136,7 +117,7 @@ int main()
         }
 
         while (elapsed >= STEPTIME) {
-            app.update(STEPTIME);
+            app.simulate(STEPTIME);
             elapsed -= STEPTIME;
         }
 

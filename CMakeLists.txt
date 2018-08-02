@@ -10,13 +10,14 @@ add_executable(
         EntityManager.h
         EntityComponentSystem.cpp
         EntityComponentSystem.h
-        ComponentSystems/System.h
-        ComponentSystems/SystemBase.h
-        MessageManager.cpp
-        MessageManager.h
+        System.h
+        SystemBase.h
         SystemManager.cpp
         SystemManager.h
         Entity.h
         Entity.cpp
         example.cpp
-        ComponentSystems/SystemBase.cpp)
+        SystemBase.cpp
+        ComponentManager.cpp
+        ComponentManager.h
+        Component.h ComponentBase.cpp ComponentBase.h)

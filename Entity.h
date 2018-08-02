@@ -20,6 +20,7 @@ namespace pecs
     public:
         Entity(EntityIndex index, EntityVersion version);
 
+        EntityId id();
         EntityIndex index();
         EntityVersion version();
 
