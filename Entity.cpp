@@ -13,17 +13,17 @@ namespace pecs
 
     }
 
-    EntityId Entity::id()
+    EntityId Entity::id() const
     {
         return _id;
     }
 
-    EntityIndex Entity::index()
+    EntityIndex Entity::index() const
     {
         return EntityIndex(_id >> 16U);
     }
 
-    EntityVersion Entity::version()
+    EntityVersion Entity::version() const
     {
         return EntityVersion(_id & 0xFFFFU);
     }

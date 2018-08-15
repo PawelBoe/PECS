@@ -22,7 +22,7 @@ namespace pecs
 
         void create(Entity entity);
 
-        bool exists(Entity entity);
+        bool exists(Entity entity) const;
 
         T& get(Entity entity);
 
@@ -53,7 +53,7 @@ namespace pecs
     }
 
     template<typename T>
-    bool Component<T>::exists(Entity entity)
+    bool Component<T>::exists(Entity entity) const
     {
         return _lookup.find(entity.id()) != _lookup.end();
     }

@@ -36,7 +36,8 @@ namespace pecs
     template<typename T, typename... Args>
     void SystemManager::add(Args &&... args)
     {
-        _systems[T::systemId()] = new T(std::forward<Args>(args) ...);
+        if (_systems.find(T::systemId()) == _systems.end())
+            _systems[T::systemId()] = new T(std::forward<Args>(args) ...);
     }
 
     template<typename T>
@@ -48,7 +49,7 @@ namespace pecs
     template<typename T>
     T *SystemManager::system()
     {
-        return (T*)(_systems[T::systemId()]);
+        return (T*)(_systems.at(T::systemId()));
     }
 }
 

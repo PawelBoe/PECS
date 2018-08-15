@@ -26,7 +26,7 @@ namespace pecs
         void create(Entity entity);
 
         template <typename T>
-        bool exists(Entity entity);
+        bool exists(Entity entity) const;
 
         template <typename T>
         T& get(Entity entity);
@@ -44,11 +44,12 @@ namespace pecs
     template<typename T>
     void ComponentManager::add()
     {
-        _components[Component<T>::systemId()] = new Component<T>;
+        if (_components.find(Component<T>::systemId()) == _components.end())
+            _components[Component<T>::systemId()] = new Component<T>;
     }
 
     template<typename T>
-    bool ComponentManager::exists(Entity entity)
+    bool ComponentManager::exists(Entity entity) const
     {
         return component<T>()->exists(entity);
     }
@@ -74,7 +75,7 @@ namespace pecs
     template<typename T>
     Component<T>* ComponentManager::component()
     {
-        return (Component<T>*)(_components[Component<T>::systemId()]);
+        return (Component<T>*)(_components.at(Component<T>::systemId()));
     }
 
 }

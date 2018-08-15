@@ -27,7 +27,7 @@ namespace pecs
         return {index, _entity_version[index]};
     }
 
-    bool EntityManager::exists(Entity entity)
+    bool EntityManager::exists(Entity entity) const
     {
         return _entity_version[entity.index()] == entity.version();
     }
@@ -39,6 +39,11 @@ namespace pecs
             _entity_version[index] += 1;
             _free_list.push_back(index);
         }
+    }
+
+    const std::vector<Entity> &EntityManager::entities() const
+    {
+        return _entities;
     }
 
 }
