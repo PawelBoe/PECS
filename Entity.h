@@ -18,6 +18,15 @@ namespace pecs
     class Entity
     {
     public:
+        struct Hash
+        {
+            unsigned int operator()(Entity const& e) const
+            {
+                return e.index();
+            }
+        };
+
+        Entity();
         Entity(EntityIndex index, EntityVersion version);
 
         EntityId id() const;

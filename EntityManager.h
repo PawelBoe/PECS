@@ -8,6 +8,7 @@
 #include <vector>
 #include <queue>
 #include "Entity.h"
+#include "util/sparse_set.h"
 
 
 namespace pecs
@@ -22,13 +23,14 @@ namespace pecs
         bool exists(Entity entity) const;
         void remove(Entity entity);
 
-        const std::vector<Entity>& entities() const;
+        using iterator = Entity*;
+        iterator begin() const;
+        iterator end() const;
 
     private:
         EntityIndex _index_counter = 0;
-        std::vector<EntityIndex> _free_list;
-        std::vector<EntityVersion> _entity_version;
-        std::vector<Entity> _entities;
+        sparse_set<Entity, Entity::Hash> _used;
+        std::vector<Entity> _unused;
     };
 
 }

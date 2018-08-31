@@ -14,36 +14,47 @@ namespace pecs
 
     Entity EntityManager::create()
     {
-        EntityIndex index;
+        Entity entity;
 
-        if (_free_list.empty()) {
-            index = _index_counter++;
-            _entity_version.push_back(1);
+        if (_unused.empty()) {
+            EntityIndex index = _index_counter++;
+            entity = Entity(index, 0);
+            _used.add(entity);
         } else {
-            index = _free_list.back();
-            _free_list.pop_back();
+            entity = _unused.back();
+            _unused.pop_back();
         }
 
-        return {index, _entity_version[index]};
+        return entity;
     }
 
     bool EntityManager::exists(Entity entity) const
     {
-        return _entity_version[entity.index()] == entity.version();
+        auto idx = _used.search(entity);
+
+        if (idx >= _used.size())
+            return false;
+
+        return _used.data()[idx].version() == entity.version();
     }
 
     void EntityManager::remove(Entity entity)
     {
         if (exists(entity)) {
-            EntityIndex index = entity.index();
-            _entity_version[index] += 1;
-            _free_list.push_back(index);
+            _used.remove(entity);
+            Entity removed_entity(entity.index(), static_cast<EntityVersion>(entity.version() + 1));
+            _unused.push_back(removed_entity);
         }
     }
 
-    const std::vector<Entity> &EntityManager::entities() const
+    EntityManager::iterator EntityManager::begin() const
     {
-        return _entities;
+        return _used.begin();
+    }
+
+    EntityManager::iterator EntityManager::end() const
+    {
+        return _used.end();
     }
 
 }

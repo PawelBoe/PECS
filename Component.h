@@ -10,6 +10,7 @@
 #include <vector>
 #include "ComponentBase.h"
 #include "Entity.h"
+#include "util/sparse_map.h"
 
 namespace pecs
 {
@@ -28,56 +29,41 @@ namespace pecs
 
         void remove(Entity entity);
 
-        static ComponentId systemId();
+        static ComponentId componentId();
 
     private:
-        size_t _index_counter = 0;
-        std::vector<T> _data;
-        std::vector<size_t> _free_list;
-        std::unordered_map<EntityId, size_t> _lookup;
+        sparse_map<Entity, T, Entity::Hash> _data;
     };
 
     template<typename T>
     void Component<T>::create(Entity entity)
     {
-        size_t index;
-        if (_free_list.empty()) {
-            index = _index_counter++;
-            _data.emplace_back();
-        } else {
-            index = _free_list.back();
-            _free_list.pop_back();
-        }
-
-        _lookup[entity.id()] = index;
+        _data.add(entity, T());
     }
 
     template<typename T>
     bool Component<T>::exists(Entity entity) const
     {
-        return _lookup.find(entity.id()) != _lookup.end();
+        return  _data.search(entity) < _data.size();
     }
 
     template<typename T>
     T& Component<T>::get(Entity entity)
     {
-        return _data.at(_lookup.at(entity.id()));
+        return _data.at(entity);
     }
 
     template<typename T>
     void Component<T>::remove(Entity entity)
     {
-        if (exists(entity)) {
-            _free_list.push_back(_lookup.at(entity.id()));
-            _lookup.erase(entity.id());
-        }
+        _data.remove(entity);
     }
 
     template<typename T>
-    ComponentBase::ComponentId Component<T>::systemId()
+    ComponentBase::ComponentId Component<T>::componentId()
     {
-        static ComponentId systemId = component_counter++;
-        return systemId;
+        static ComponentId componentId = component_counter++;
+        return componentId;
     }
 
 }

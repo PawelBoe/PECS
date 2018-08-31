@@ -37,6 +37,8 @@ namespace pecs
     private:
         template <typename T>
         Component<T>* component();
+        template <typename T>
+        const Component<T>* component() const;
 
         std::unordered_map<ComponentBase::ComponentId, ComponentBase*> _components;
     };
@@ -44,8 +46,8 @@ namespace pecs
     template<typename T>
     void ComponentManager::add()
     {
-        if (_components.find(Component<T>::systemId()) == _components.end())
-            _components[Component<T>::systemId()] = new Component<T>;
+        if (_components.find(Component<T>::componentId()) == _components.end())
+            _components[Component<T>::componentId()] = new Component<T>;
     }
 
     template<typename T>
@@ -75,7 +77,13 @@ namespace pecs
     template<typename T>
     Component<T>* ComponentManager::component()
     {
-        return (Component<T>*)(_components.at(Component<T>::systemId()));
+        return (Component<T>*)(_components.at(Component<T>::componentId()));
+    }
+
+    template<typename T>
+    const Component<T>* ComponentManager::component() const
+    {
+        return (Component<T>*)(_components.at(Component<T>::componentId()));
     }
 
 }

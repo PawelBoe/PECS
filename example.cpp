@@ -2,6 +2,7 @@
 // Created by Pawel Boening on 22/06/18.
 //
 
+#include <iostream>
 #include "EntityComponentSystem.h"
 #include "SFML/Graphics.hpp"
 
@@ -99,7 +100,7 @@ int main()
     float STEPTIME = 50;
 
     while (window.isOpen()) {
-        elapsed += clock.restart().asMicroseconds();
+        elapsed += clock.restart().asMilliseconds();
 
         if (elapsed > STEPTIME * 10)
             elapsed = STEPTIME * 10;

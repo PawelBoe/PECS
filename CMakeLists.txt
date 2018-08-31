@@ -20,4 +20,4 @@ add_executable(
         SystemBase.cpp
         ComponentManager.cpp
         ComponentManager.h
-        Component.h ComponentBase.cpp ComponentBase.h)
+        Component.h ComponentBase.cpp ComponentBase.h View.cpp View.h util/sparse_set.cpp util/sparse_set.h util/sparse_map.cpp util/sparse_map.h)
