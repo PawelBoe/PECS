@@ -33,6 +33,9 @@ namespace pecs
         EntityIndex index() const;
         EntityVersion version() const;
 
+        bool operator==(const Entity &rhs) const;
+        bool operator!=(const Entity &rhs) const;
+
     private:
         EntityId _id;
     };

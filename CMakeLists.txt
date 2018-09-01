@@ -10,11 +10,9 @@ include_directories(${CATCH_DIR})
 add_executable(
         TESTS
         tests/TestMain.cpp
-        tests/TestCase_0.cpp
-        )
+        tests/TestCase_util.cpp
+        tests/TestCase_entity.cpp
 
-add_executable(
-        EXAMPLE
         src/EntityManager.cpp
         src/EntityManager.h
         src/EntityComponentSystem.cpp
@@ -25,7 +23,34 @@ add_executable(
         src/SystemManager.h
         src/Entity.h
         src/Entity.cpp
+        src/SystemBase.cpp
+        src/ComponentManager.cpp
+        src/ComponentManager.h
+        src/Component.h
+        src/ComponentBase.cpp
+        src/ComponentBase.h
+        src/View.cpp
+        src/View.h
+        src/util/sparse_set.cpp
+        src/util/sparse_set.h
+        src/util/sparse_map.cpp
+        src/util/sparse_map.h
+        )
+
+add_executable(
+        EXAMPLE
         src/example.cpp
+
+        src/EntityManager.cpp
+        src/EntityManager.h
+        src/EntityComponentSystem.cpp
+        src/EntityComponentSystem.h
+        src/System.h
+        src/SystemBase.h
+        src/SystemManager.cpp
+        src/SystemManager.h
+        src/Entity.h
+        src/Entity.cpp
         src/SystemBase.cpp
         src/ComponentManager.cpp
         src/ComponentManager.h

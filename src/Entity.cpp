@@ -33,4 +33,14 @@ namespace pecs
         return EntityVersion(_id & 0xFFFFU);
     }
 
+    bool Entity::operator==(const Entity &rhs) const
+    {
+        return _id == rhs._id;
+    }
+
+    bool Entity::operator!=(const Entity &rhs) const
+    {
+        return !(rhs == *this);
+    }
+
 }

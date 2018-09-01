@@ -23,6 +23,7 @@ namespace pecs
         } else {
             entity = _unused.back();
             _unused.pop_back();
+            _used.add(entity);
         }
 
         return entity;
