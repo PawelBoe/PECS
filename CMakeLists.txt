@@ -12,6 +12,7 @@ add_executable(
         tests/TestMain.cpp
         tests/TestCase_util.cpp
         tests/TestCase_entity.cpp
+        tests/TestCase_signature.cpp
 
         src/EntityManager.cpp
         src/EntityManager.h
@@ -31,11 +32,10 @@ add_executable(
         src/ComponentBase.h
         src/View.cpp
         src/View.h
-        src/util/sparse_set.cpp
         src/util/sparse_set.h
-        src/util/sparse_map.cpp
         src/util/sparse_map.h
-        )
+        src/Signature.h
+        src/SignatureBase.h)
 
 add_executable(
         EXAMPLE
@@ -59,8 +59,7 @@ add_executable(
         src/ComponentBase.h
         src/View.cpp
         src/View.h
-        src/util/sparse_set.cpp
         src/util/sparse_set.h
-        src/util/sparse_map.cpp
         src/util/sparse_map.h
-        )
+        src/Signature.h
+        src/SignatureBase.h)

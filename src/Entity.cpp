@@ -6,14 +6,14 @@
 
 namespace pecs
 {
-    Entity::Entity() :
-            _id(EntityId(0) << 16U | EntityId(0))
+    Entity::Entity()
+            : _id(EntityId(0) << 16U | EntityId(0))
     {
 
     }
 
-    Entity::Entity(EntityIndex index, EntityVersion version) :
-            _id(EntityId(index) << 16U | EntityId(version))
+    Entity::Entity(EntityIndex index, EntityVersion version)
+            : _id(EntityId(index) << 16U | EntityId(version))
     {
 
     }

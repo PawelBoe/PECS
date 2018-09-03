@@ -32,32 +32,22 @@ TEST_CASE( "sparse_set mixed creation and deletion of 10000 entities", "[sparse_
 {
     pecs::sparse_set<pecs::Entity, pecs::Entity::Hash> sset;
 
-    for (int i = 0; i < 3000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        sset.add(e);
-    }
+    std::vector<int> entity_amounts = {3000, 7000, 100, 666, 1000, 10000};
 
-    REQUIRE( sset.size() == 3000 );
+    for (int amount : entity_amounts) {
+        for (int i = 0; i < amount; ++i) {
+            pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
+            sset.add(e);
+        }
 
-    for (int i = 0; i < 3000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        REQUIRE( sset.search(e) < sset.size() );
-        sset.remove(e);
-        REQUIRE( sset.search(e) >= sset.size() );
-    }
+        REQUIRE( sset.size() == amount );
 
-    for (int i = 0; i < 7000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        sset.add(e);
-    }
-
-    REQUIRE( sset.size() == 7000 );
-
-    for (int i = 0; i < 7000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        REQUIRE( sset.search(e) < sset.size() );
-        sset.remove(e);
-        REQUIRE( sset.search(e) >= sset.size() );
+        for (int i = 0; i < amount; ++i) {
+            pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
+            REQUIRE( sset.search(e) < sset.size() );
+            sset.remove(e);
+            REQUIRE( sset.search(e) >= sset.size() );
+        }
     }
 }
 
@@ -84,31 +74,21 @@ TEST_CASE( "sparse_map mixed creation and deletion of 10000 entities", "[sparse_
 {
     pecs::sparse_map<pecs::Entity, int, pecs::Entity::Hash> smap;
 
-    for (int i = 0; i < 3000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        smap.add(e, i);
-    }
+    std::vector<int> entity_amounts = {3000, 7000, 100, 666, 1000, 10000};
 
-    REQUIRE( smap.size() == 3000 );
+    for (int amount : entity_amounts) {
+        for (int i = 0; i < amount; ++i) {
+            pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
+            smap.add(e, i);
+        }
 
-    for (int i = 0; i < 3000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        REQUIRE( smap.search(e) < smap.size() );
-        smap.remove(e);
-        REQUIRE( smap.search(e) >= smap.size() );
-    }
+        REQUIRE( smap.size() == amount );
 
-    for (int i = 0; i < 7000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        smap.add(e, i);
-    }
-
-    REQUIRE( smap.size() == 7000 );
-
-    for (int i = 0; i < 7000; ++i) {
-        pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
-        REQUIRE( smap.search(e) < smap.size() );
-        smap.remove(e);
-        REQUIRE( smap.search(e) >= smap.size() );
+        for (int i = 0; i < amount; ++i) {
+            pecs::Entity e(static_cast<pecs::EntityIndex>(i), 0);
+            REQUIRE( smap.search(e) < smap.size() );
+            smap.remove(e);
+            REQUIRE( smap.search(e) >= smap.size() );
+        }
     }
 }

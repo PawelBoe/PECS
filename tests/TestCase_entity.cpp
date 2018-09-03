@@ -54,32 +54,21 @@ TEST_CASE( "EntityManager creation and deletion of 10000 entities", "[EntityMana
 TEST_CASE( "EntityManager mixed creation and deletion of 10000 entities", "[EntityManager]")
 {
     pecs::EntityManager entity_manager;
+    std::vector<int> entity_amounts = {3000, 7000, 100, 666, 1000, 10000};
 
-    for (int i = 0; i < 3000; ++i) {
-        entity_manager.create();
+    for (int amount : entity_amounts) {
+        for (int i = 0; i < amount; ++i) {
+            entity_manager.create();
+        }
+
+        int count = 0;
+        for (auto e : entity_manager) {
+            count++;
+            REQUIRE( entity_manager.exists(e) );
+            entity_manager.remove(e);
+            REQUIRE( !entity_manager.exists(e) );
+        }
+
+        REQUIRE( count == amount );
     }
-
-    int count = 0;
-    for (auto e : entity_manager) {
-        count++;
-        REQUIRE( entity_manager.exists(e) );
-        entity_manager.remove(e);
-        REQUIRE( !entity_manager.exists(e) );
-    }
-
-    REQUIRE( count == 3000 );
-
-    for (int i = 0; i < 7000; ++i) {
-        entity_manager.create();
-    }
-
-    count = 0;
-    for (auto e : entity_manager) {
-        count++;
-        REQUIRE( entity_manager.exists(e) );
-        entity_manager.remove(e);
-        REQUIRE( !entity_manager.exists(e) );
-    }
-
-    REQUIRE( count == 7000 );
 }

@@ -22,7 +22,6 @@ namespace pecs
 
     private:
         sparse_set<Entity, Entity::Hash> _entities;
-
     };
 
 }
