@@ -12,11 +12,7 @@ namespace pecs
     class ComponentBase
     {
     public:
-        typedef int ComponentId;
         virtual ~ComponentBase() = default;
-
-    protected:
-        static ComponentId component_counter;
     };
 
 }

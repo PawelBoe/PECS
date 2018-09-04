@@ -10,20 +10,33 @@
 
 namespace pecs
 {
-
-    template <typename Key, typename Value, typename Hash>
-    class sparse_map
+    template <typename K, typename  V>
+    struct KeyValue
     {
-        template <typename K, typename V, typename H>
-        struct PairHash
+        K key;
+        V value;
+
+        template <typename H>
+        struct KeyHash
         {
-            unsigned int operator()(std::pair<K, V> const& e) const
+            unsigned int operator()(KeyValue<K, V> const& e) const
             {
-                return _hash(e.first);
+                return _hash(e.key);
             }
 
             H _hash;
         };
+    };
+
+    template <typename K, typename V>
+    KeyValue<K, V> make_keyvalue(K &key, V &value)
+    {
+        return {key, value};
+    }
+
+    template <typename Key, typename Value, typename Hash>
+    class sparse_map
+    {
 
     public:
         explicit sparse_map(unsigned int cap = 0);
@@ -37,17 +50,17 @@ namespace pecs
         void clear();
 
         unsigned int size() const;
-        std::pair<Key, Value>* data();
-        const std::pair<Key, Value>* data() const;
+        KeyValue<Key, Value>* data();
+        const KeyValue<Key, Value>* data() const;
 
-        using iterator = std::pair<Key, Value>*;
+        using iterator = KeyValue<Key, Value>*;
         iterator begin();
         const iterator begin() const;
         iterator end();
         const iterator end() const;
 
     private:
-        sparse_set<std::pair<Key, Value>, PairHash<Key, Value, Hash>> _sset;
+        sparse_set<KeyValue<Key, Value>,  typename KeyValue<Key, Value>::template KeyHash<Hash>> _sset;
     };
 
     template<typename Key, typename Value, typename Hash>
@@ -64,7 +77,7 @@ namespace pecs
     template<typename Key, typename Value, typename Hash>
     void sparse_map<Key, Value, Hash>::add(Key k, Value v)
     {
-        auto p = std::make_pair(k, v);
+        auto p = make_keyvalue(k, v);
         return _sset.add(p);
     }
 
@@ -72,7 +85,7 @@ namespace pecs
     void sparse_map<Key, Value, Hash>::remove(Key k)
     {
         Value v;
-        auto p = std::make_pair(k, v);
+        auto p = make_keyvalue(k, v);
         return _sset.remove(p);
     }
 
@@ -80,7 +93,7 @@ namespace pecs
     unsigned int sparse_map<Key, Value, Hash>::search(Key k) const
     {
         Value v;
-        auto p = std::make_pair(k, v);
+        auto p = make_keyvalue(k, v);
         return _sset.search(p);
     }
 
@@ -92,7 +105,7 @@ namespace pecs
         if (idx >= size())
             throw std::out_of_range("key not found in smap.");
 
-        return _sset.data()[idx].second;
+        return _sset.data()[idx].value;
     }
 
     template<typename Key, typename Value, typename Hash>
@@ -103,7 +116,7 @@ namespace pecs
         if (idx >= size())
             throw std::out_of_range("key not found in smap.");
 
-        return _sset.data()[idx].second;
+        return _sset.data()[idx].value;
     }
     template<typename Key, typename Value, typename Hash>
     void sparse_map<Key, Value, Hash>::clear()
@@ -118,13 +131,13 @@ namespace pecs
     }
 
     template<typename Key, typename Value, typename Hash>
-    std::pair<Key, Value> *sparse_map<Key, Value, Hash>::data() // not allowed to change result of hash function
+    KeyValue<Key, Value> *sparse_map<Key, Value, Hash>::data() // not allowed to change result of hash function
     {
         return _sset.data();
     }
 
     template<typename Key, typename Value, typename Hash>
-    const std::pair<Key, Value> *sparse_map<Key, Value, Hash>::data() const // not allowed to change result of hash function
+    const KeyValue<Key, Value> *sparse_map<Key, Value, Hash>::data() const // not allowed to change result of hash function
     {
         return _sset.data();
     }

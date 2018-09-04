@@ -7,6 +7,7 @@
 
 
 #include "Entity.h"
+#include "ComponentManager.h"
 
 namespace pecs
 {
@@ -15,7 +16,7 @@ namespace pecs
     {
     public:
         virtual ~SignatureBase() = default;
-        virtual bool match(Entity entity) = 0;
+        virtual bool match(ComponentManager &components, Entity entity) = 0;
     };
 
 }

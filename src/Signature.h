@@ -16,63 +16,45 @@ namespace pecs
     class Signature : public SignatureBase
     {
     public:
-        explicit Signature(ComponentManager &components);
-
-        bool match(Entity entity) override;
+        bool match(ComponentManager &components, Entity entity) override;
 
     private:
         template <typename C>
-        bool _match(Entity entity);
+        bool _match(ComponentManager &components, Entity entity);
 
         template <typename C1, typename C2, typename ... Cs>
-        bool _match(Entity entity);
-
-        ComponentManager &_components;
+        bool _match(ComponentManager &components, Entity entity);
     };
 
     template<typename... Ts>
-    Signature<Ts...>::Signature(ComponentManager &components)
-            : _components(components)
+    bool Signature<Ts...>::match(ComponentManager &components, Entity entity)
     {
-    }
-
-    template<typename... Ts>
-    bool Signature<Ts...>::match(Entity entity)
-    {
-        return _match<Ts ...>(entity);
+        return _match<Ts ...>(components, entity);
     }
 
     template<typename... Ts>
     template<typename C>
-    bool Signature<Ts...>::_match(Entity entity)
+    bool Signature<Ts...>::_match(ComponentManager &components, Entity entity)
     {
-        return _components.exists<C>(entity);
+        return components.exists<C>(entity);
     }
 
     template<typename... Ts>
     template<typename C1, typename C2, typename... Cs>
-    bool Signature<Ts...>::_match(Entity entity)
+    bool Signature<Ts...>::_match(ComponentManager &components, Entity entity)
     {
-        return _components.exists<C1>(entity) && _match<C2, Cs ...>(entity);
+        return components.exists<C1>(entity) && _match<C2, Cs ...>(components, entity);
     }
 
     template <>
     class Signature <> : public SignatureBase
     {
     public:
-        explicit Signature(ComponentManager &components);
-
-        bool match(Entity entity) override;
+        bool match(ComponentManager &components, Entity entity) override
+        {
+            return true;
+        }
     };
-
-    Signature<>::Signature(ComponentManager &components)
-    {
-    }
-
-    bool Signature<>::match(Entity entity)
-    {
-        return false;
-    }
 
 }
 

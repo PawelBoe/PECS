@@ -29,8 +29,6 @@ namespace pecs
 
         void remove(Entity entity);
 
-        static ComponentId componentId();
-
     private:
         sparse_map<Entity, T, Entity::Hash> _data;
     };
@@ -57,13 +55,6 @@ namespace pecs
     void Component<T>::remove(Entity entity)
     {
         _data.remove(entity);
-    }
-
-    template<typename T>
-    ComponentBase::ComponentId Component<T>::componentId()
-    {
-        static ComponentId componentId = component_counter++;
-        return componentId;
     }
 
 }

@@ -14,7 +14,6 @@ TEST_CASE( "Entity creation and deletion", "[Entity]" )
 
     REQUIRE( entity.index() == 42 );
     REQUIRE( entity.version() == 13);
-    REQUIRE( entity.id()  == (42 << 16U | 13));
 }
 
 TEST_CASE( "Entity comparison", "[Entity]" )
@@ -32,11 +31,12 @@ TEST_CASE( "Entity comparison", "[Entity]" )
     REQUIRE( entity_0 != entity_4 );
 }
 
-TEST_CASE( "EntityManager creation and deletion of 10000 entities", "[EntityManager]" )
+TEST_CASE( "EntityManager creation and deletion of 1M entities", "[EntityManager]" )
 {
     pecs::EntityManager entity_manager;
+    int amount = 1000000;
 
-    for (int i = 0; i < 10000; ++i) {
+    for (int i = 0; i < amount; ++i) {
         entity_manager.create();
     }
 
@@ -48,10 +48,10 @@ TEST_CASE( "EntityManager creation and deletion of 10000 entities", "[EntityMana
         REQUIRE( !entity_manager.exists(e) );
     }
 
-    REQUIRE( count == 10000 );
+    REQUIRE( count == amount );
 }
 
-TEST_CASE( "EntityManager mixed creation and deletion of 10000 entities", "[EntityManager]")
+TEST_CASE( "EntityManager mixed creation and deletion of 10k entities", "[EntityManager]")
 {
     pecs::EntityManager entity_manager;
     std::vector<int> entity_amounts = {3000, 7000, 100, 666, 1000, 10000};

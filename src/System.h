@@ -22,21 +22,12 @@ namespace pecs
         ~System() override = default;
 
         void update(EntityManager &entities, ComponentManager &components, float dt);
-
-        static SystemId systemId();
     };
 
     template<typename T>
     void System<T>::update(EntityManager &entities, ComponentManager &components, float dt)
     {
         static_cast<T*>(this)->_update(entities, components, dt);
-    }
-
-    template<typename T>
-    SystemBase::SystemId System<T>::systemId()
-    {
-        static SystemId systemId = system_counter++;
-        return systemId;
     }
 
 }

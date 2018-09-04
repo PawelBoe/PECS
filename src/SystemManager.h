@@ -7,6 +7,7 @@
 
 
 #include <unordered_map>
+#include "util/TypeId.h"
 #include "System.h"
 #include "EntityManager.h"
 #include "ComponentManager.h"
@@ -30,14 +31,14 @@ namespace pecs
         template <typename T>
         T* system();
 
-        std::unordered_map<SystemBase::SystemId, SystemBase*> _systems;
+        std::unordered_map<TypeId_t, SystemBase*> _systems;
     };
 
     template<typename T, typename... Args>
     void SystemManager::add(Args &&... args)
     {
-        if (_systems.find(T::systemId()) == _systems.end())
-            _systems[T::systemId()] = new T(std::forward<Args>(args) ...);
+        if (_systems.find(TypeId<T>) == _systems.end())
+            _systems[TypeId<T>] = new T(std::forward<Args>(args) ...);
     }
 
     template<typename T>
@@ -49,7 +50,7 @@ namespace pecs
     template<typename T>
     T *SystemManager::system()
     {
-        return (T*)(_systems.at(T::systemId()));
+        return (T*)(_systems.at(TypeId<T>));
     }
 }
 

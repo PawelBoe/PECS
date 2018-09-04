@@ -26,43 +26,42 @@ TEST_CASE( "Signature creation and matching", "[Signature]" )
     components.create<Component_0>(entity_1);
     components.create<Component_2>(entity_1);
 
+    pecs::Signature<Component_0> signature_0;
+    pecs::Signature<Component_0, Component_1> signature_1;
+    pecs::Signature<Component_0, Component_1, Component_2> signature_2;
+    pecs::Signature<Component_0, Component_2> signature_3;
 
-    pecs::Signature<Component_0> signature_0(components);
-    pecs::Signature<Component_0, Component_1> signature_1(components);
-    pecs::Signature<Component_0, Component_1, Component_2> signature_2(components);
-    pecs::Signature<Component_0, Component_2> signature_3(components);
+    REQUIRE( signature_0.match(components, entity_0) );
+    REQUIRE( signature_1.match(components, entity_0) );
+    REQUIRE( !signature_2.match(components, entity_0) );
+    REQUIRE( !signature_3.match(components, entity_0) );
 
-    REQUIRE( signature_0.match(entity_0) );
-    REQUIRE( signature_1.match(entity_0) );
-    REQUIRE( !signature_2.match(entity_0) );
-    REQUIRE( !signature_3.match(entity_0) );
-
-    REQUIRE( signature_0.match(entity_1) );
-    REQUIRE( !signature_1.match(entity_1) );
-    REQUIRE( !signature_2.match(entity_1) );
-    REQUIRE( signature_3.match(entity_1) );
+    REQUIRE( signature_0.match(components, entity_1) );
+    REQUIRE( !signature_1.match(components, entity_1) );
+    REQUIRE( !signature_2.match(components, entity_1) );
+    REQUIRE( signature_3.match(components, entity_1) );
 
     components.create<Component_2>(entity_0);
     components.create<Component_1>(entity_1);
 
-    REQUIRE( signature_2.match(entity_0) );
-    REQUIRE( signature_3.match(entity_0) );
+    REQUIRE( signature_2.match(components, entity_0) );
+    REQUIRE( signature_3.match(components, entity_0) );
 
-    REQUIRE( signature_1.match(entity_1) );
-    REQUIRE( signature_2.match(entity_1) );
+    REQUIRE( signature_1.match(components, entity_1) );
+    REQUIRE( signature_2.match(components, entity_1) );
 
     components.remove<Component_0>(entity_0);
     components.remove<Component_0>(entity_1);
 
-    REQUIRE( !signature_0.match(entity_0) );
-    REQUIRE( !signature_1.match(entity_0) );
-    REQUIRE( !signature_2.match(entity_0) );
-    REQUIRE( !signature_3.match(entity_0) );
+    REQUIRE( !signature_0.match(components, entity_0) );
+    REQUIRE( !signature_1.match(components, entity_0) );
+    REQUIRE( !signature_2.match(components, entity_0) );
+    REQUIRE( !signature_3.match(components, entity_0) );
 
-    REQUIRE( !signature_0.match(entity_1) );
-    REQUIRE( !signature_1.match(entity_1) );
-    REQUIRE( !signature_2.match(entity_1) );
-    REQUIRE( !signature_3.match(entity_1) );
+    REQUIRE( !signature_0.match(components, entity_1) );
+    REQUIRE( !signature_1.match(components, entity_1) );
+    REQUIRE( !signature_2.match(components, entity_1) );
+    REQUIRE( !signature_3.match(components, entity_1) );
 }
 
 TEST_CASE( "SignatureBase creation and matching", "[Signature][SignatureBase]" )
@@ -85,17 +84,17 @@ TEST_CASE( "SignatureBase creation and matching", "[Signature][SignatureBase]" )
 
     std::vector<pecs::SignatureBase*> signatures;
 
-    signatures.push_back(new pecs::Signature<Component_0>(components));
-    signatures.push_back(new pecs::Signature<Component_1>(components));
-    signatures.push_back(new pecs::Signature<Component_2>(components));
-    signatures.push_back(new pecs::Signature<Component_0, Component_1>(components));
-    signatures.push_back(new pecs::Signature<Component_0, Component_2>(components));
-    signatures.push_back(new pecs::Signature<Component_1, Component_2>(components));
-    signatures.push_back(new pecs::Signature<Component_0, Component_1, Component_2>(components));
+    signatures.push_back(new pecs::Signature<Component_0>);
+    signatures.push_back(new pecs::Signature<Component_1>);
+    signatures.push_back(new pecs::Signature<Component_2>);
+    signatures.push_back(new pecs::Signature<Component_0, Component_1>);
+    signatures.push_back(new pecs::Signature<Component_0, Component_2>);
+    signatures.push_back(new pecs::Signature<Component_1, Component_2>);
+    signatures.push_back(new pecs::Signature<Component_0, Component_1, Component_2>);
 
     for (auto signature : signatures) {
-        REQUIRE( signature->match(entity_0) );
-        REQUIRE( !signature->match(entity_1) );
+        REQUIRE( signature->match(components, entity_0) );
+        REQUIRE( !signature->match(components, entity_1) );
     }
 
     components.remove<Component_0>(entity_0);
@@ -106,8 +105,8 @@ TEST_CASE( "SignatureBase creation and matching", "[Signature][SignatureBase]" )
     components.create<Component_2>(entity_1);
 
     for (auto signature : signatures) {
-        REQUIRE( !signature->match(entity_0) );
-        REQUIRE( signature->match(entity_1) );
+        REQUIRE( !signature->match(components, entity_0) );
+        REQUIRE( signature->match(components, entity_1) );
     }
 
     for (auto signature : signatures) {
@@ -126,7 +125,7 @@ TEST_CASE( "Empty signature creation ", "[Signature]" )
     components.add<Component_0>();
     components.create<Component_0>(entity_0);
 
-    pecs::Signature<> signature_0(components);
+    pecs::Signature<> signature_0;
 
-    REQUIRE( !signature_0.match(entity_0) );
+    REQUIRE( signature_0.match(components, entity_0) );
 }

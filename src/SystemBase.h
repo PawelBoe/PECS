@@ -12,11 +12,7 @@ namespace pecs
     class SystemBase
     {
     public:
-        typedef int SystemId;
         virtual ~SystemBase() = default;
-
-    protected:
-        static SystemId system_counter;
     };
 
 }

@@ -7,6 +7,7 @@
 
 
 #include <unordered_map>
+#include "util/TypeId.h"
 #include "EntityManager.h"
 #include "Component.h"
 
@@ -40,14 +41,14 @@ namespace pecs
         template <typename T>
         const Component<T>* component() const;
 
-        std::unordered_map<ComponentBase::ComponentId, ComponentBase*> _components;
+        std::unordered_map<TypeId_t, ComponentBase*> _components;
     };
 
     template<typename T>
     void ComponentManager::add()
     {
-        if (_components.find(Component<T>::componentId()) == _components.end())
-            _components[Component<T>::componentId()] = new Component<T>;
+        if (_components.find(TypeId<Component<T>>) == _components.end())
+            _components[TypeId<Component<T>>] = new Component<T>;
     }
 
     template<typename T>
@@ -77,13 +78,13 @@ namespace pecs
     template<typename T>
     Component<T>* ComponentManager::component()
     {
-        return (Component<T>*)(_components.at(Component<T>::componentId()));
+        return (Component<T>*)(_components.at(TypeId<Component<T>>));
     }
 
     template<typename T>
     const Component<T>* ComponentManager::component() const
     {
-        return (Component<T>*)(_components.at(Component<T>::componentId()));
+        return (Component<T>*)(_components.at(TypeId<Component<T>>));
     }
 
 }

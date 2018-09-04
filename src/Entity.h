@@ -11,8 +11,8 @@
 namespace pecs
 {
 
-    typedef uint16_t EntityIndex;
-    typedef uint16_t EntityVersion;
+    typedef uint32_t EntityIndex;
+    typedef uint8_t EntityVersion;
     typedef uint32_t EntityId;
 
     class Entity
