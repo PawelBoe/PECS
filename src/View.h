@@ -6,43 +6,137 @@
 #define ECS_VIEW_H
 
 
+#include "ViewBase.h"
 #include "util/TypeId.h"
 #include "util/sparse_set.h"
-#include "Entity.h"
 #include "EntityManager.h"
-#include "Signature.h"
 #include "ComponentManager.h"
+#include "Signature.h"
 
 namespace pecs
 {
-
-    class ViewBase
-    {
-    public:
-        virtual ~ViewBase() = default;
-
-    private:
-        friend class ViewFactory;
-        virtual void update(Entity entity) = 0;
-    };
 
     template <typename ... Ts>
     class View : public ViewBase
     {
     public:
-        View(EntityManager &entities, ComponentManager &components, Signature<Ts...> signature)
-                : _entities(entities), _components(components), _signature(signature)
-        {
-            for (auto e : entities) {
-                update(e);
-            }
-        }
+        View(EntityManager &entities, ComponentManager &components, Signature<Ts...> signature, std::unordered_map<TypeId_t, ViewBase*> &views);
+
+        Entity create();
+        void remove(Entity entity);
 
         template <typename T>
-        void create(Entity entity)
+        void create(Entity entity);
+        template <typename T>
+        void remove(Entity entity);
+        template <typename T>
+        T& component(Entity entity);
+
+        using iterator = Entity*;
+        const iterator begin() const;
+        const iterator end() const;
+
+        void update(Entity entity) override;
+
+    private:
+        void _dirty(Entity entity);
+
+        EntityManager &_entities;
+        ComponentManager &_components;
+        Signature<Ts...> _signature;
+        std::unordered_map<TypeId_t, ViewBase*> &_views;
+        sparse_set<Entity, Entity::Hash> _view_entities;
+    };
+
+    template<typename... Ts>
+    View<Ts...>::View(EntityManager &entities, ComponentManager &components,
+                      Signature<Ts...> signature,
+                      std::unordered_map<TypeId_t, ViewBase *> &views)
+            : _entities(entities), _components(components), _signature(signature), _views(views)
+    {
+        for (auto e : entities) {
+            update(e);
+        }
+    }
+
+    template<typename... Ts>
+    Entity View<Ts...>::create()
+    {
+        Entity entity = _entities.create();
+        _dirty(entity);
+        return entity;
+    }
+
+    template<typename... Ts>
+    void View<Ts...>::remove(Entity entity)
+    {
+        _entities.remove(entity);
+        _components.remove(entity);
+        _dirty(entity);
+    }
+
+    template<typename... Ts>
+    template<typename T>
+    void View<Ts...>::create(Entity entity)
+    {
+        _components.create<T>(entity);
+        _dirty(entity);
+    }
+
+    template<typename... Ts>
+    template<typename T>
+    void View<Ts...>::remove(Entity entity)
+    {
+        _components.remove<T>(entity);
+        _dirty(entity);
+    }
+
+    template<typename... Ts>
+    template<typename T>
+    T &View<Ts...>::component(Entity entity)
+    {
+        return _components.get<T>(entity);
+    }
+
+    template<typename... Ts>
+    typename View<Ts...>::iterator const View<Ts...>::begin() const
+    {
+        return _view_entities.begin();
+    }
+
+    template<typename... Ts>
+    typename View<Ts...>::iterator const View<Ts...>::end() const
+    {
+        return _view_entities.end();
+    }
+
+    template<typename... Ts>
+    void View<Ts...>::update(Entity entity)
+    {
+        if (_signature.match(_components, entity)) {
+            _view_entities.add(entity);
+        } else {
+            _view_entities.remove(entity);
+        }
+    }
+
+    template<typename... Ts>
+    void View<Ts...>::_dirty(Entity entity)
+    {
+        for (auto view : _views) {
+            view.second->update(entity);
+        }
+    }
+
+    template <>
+    class View<> : public ViewBase
+    {
+    public:
+        View(EntityManager &entities, ComponentManager &components,
+             Signature<> signature,
+             std::unordered_map<TypeId_t, ViewBase *> &views)
+                : _entities(entities), _components(components), _views(views)
         {
-            _components.create<T>(entity);
-            _dirty(entity);
         }
 
         Entity create()
@@ -52,16 +146,24 @@ namespace pecs
             return entity;
         }
 
+        void remove(Entity entity)
+        {
+            _entities.remove(entity);
+            _components.remove(entity);
+            _dirty(entity);
+        }
+
+        template <typename T>
+        void create(Entity entity)
+        {
+            _components.create<T>(entity);
+            _dirty(entity);
+        }
+
         template <typename T>
         void remove(Entity entity)
         {
             _components.remove<T>(entity);
-            _dirty(entity);
-        }
-
-        void remove(Entity entity)
-        {
-            _entities.remove(entity);
             _dirty(entity);
         }
 
@@ -72,77 +174,32 @@ namespace pecs
         }
 
         using iterator = Entity*;
+
         const iterator begin() const
         {
-            return _view_entities.begin();
+            return _entities.begin();
         }
 
         const iterator end() const
         {
-            return _view_entities.end();
+            return _entities.end();
+        }
+
+        void update(Entity entity) override
+        {
         }
 
     private:
-        void update(Entity entity) override
-        {
-            if (_signature.match(_components, entity)) {
-                _view_entities.add(entity);
-            } else {
-                _view_entities.remove(entity);
-            }
-        }
-
         void _dirty(Entity entity)
-        {
-
-        }
-
-        EntityManager &_entities;
-        ComponentManager &_components;
-        Signature<Ts...> _signature;
-        sparse_set<Entity, Entity::Hash> _view_entities;
-    };
-
-    class ViewFactory
-    {
-    public:
-        explicit  ViewFactory(EntityManager &entities, ComponentManager &components)
-                : _entities(entities), _components(components)
-        {
-
-        }
-
-        ~ViewFactory()
-        {
-            for (auto view : _views) {
-                delete view.second;
-            }
-        }
-
-        template <typename ... Ts>
-        void create(Signature<Ts...> signature)
-        {
-            if (_views.find(TypeId<Signature<Ts...>>) == _views.end())
-                _views[TypeId<Signature<Ts...>>] = new View<Ts...>(_entities, _components, signature);
-        }
-
-        template <typename ... Ts>
-        View<Ts...>& view(Signature<Ts...> signature)
-        {
-            return *(View<Ts...>*)_views.at(TypeId<Signature<Ts...>>);
-        }
-
-        void dirty(Entity entity)
         {
             for (auto view : _views) {
                 view.second->update(entity);
             }
         }
 
-    private:
-        std::unordered_map<TypeId_t, ViewBase*> _views;
         EntityManager &_entities;
         ComponentManager &_components;
+        std::unordered_map<TypeId_t, ViewBase*> &_views;
     };
 
 

@@ -4,32 +4,10 @@
 
 #include <iostream>
 #include "EntityComponentSystem.h"
+#include "Signature.h"
+#include "View.h"
 #include "SFML/Graphics.hpp"
 
-
-class RenderSystem : public pecs::System<RenderSystem>
-{
-public:
-    RenderSystem(sf::RenderTarget &target)
-    {
-    }
-
-    void _update(pecs::EntityManager &entities, pecs::ComponentManager &components, float dt)
-    {
-    }
-};
-
-class ParticleSystem : public pecs::System<ParticleSystem>
-{
-public:
-    ParticleSystem()
-    {
-    }
-
-    void _update(pecs::EntityManager &entities, pecs::ComponentManager &components, float dt)
-    {
-    }
-};
 
 struct ParticleComponent
 {
@@ -42,44 +20,122 @@ struct PositionComponent
     int y;
 };
 
+struct XComponent
+{
+
+};
+
+class RenderSystem : public pecs::System<RenderSystem, PositionComponent>
+{
+public:
+    RenderSystem(sf::RenderTarget &target)
+    {
+    }
+
+    void _update(pecs::View<PositionComponent> &view, float dt)
+    {
+    }
+};
+
+class ParticleSystem : public pecs::System<ParticleSystem, PositionComponent, ParticleComponent>
+{
+public:
+    ParticleSystem()
+    {
+    }
+
+    void _update(pecs::View<PositionComponent, ParticleComponent> &view, float dt)
+    {
+        std::cout << "ParticleSystem: ";
+        for (auto entity : view)
+        {
+            std::cout << entity.index() << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+class XSystem : public pecs::System<XSystem, XComponent>
+{
+public:
+    XSystem()
+    {
+    }
+
+    void _update(pecs::View<XComponent> &view, float dt)
+    {
+        std::cout << "XSystem: ";
+        for (auto entity : view)
+        {
+            std::cout << entity.index() << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
+class AllSystem : public pecs::System<AllSystem>
+{
+public:
+    AllSystem()
+    {
+    }
+
+    void _update(pecs::View<> &view, float dt)
+    {
+        std::cout << "AllSystem: ";
+        for (auto entity : view)
+        {
+            std::cout << entity.index() << " ";
+        }
+        std::cout << std::endl;
+    }
+};
+
 
 class Application : public pecs::EntityComponentSystem
 {
 public:
-    Application(sf::RenderTarget &target)
+    explicit  Application(sf::RenderTarget &target)
     {
-        _systems.add<ParticleSystem>();
-        _systems.add<RenderSystem>(target);
+        add_system<ParticleSystem>();
+        add_system<RenderSystem>(target);
+        add_system<XSystem>();
+        add_system<AllSystem>();
 
-        _components.add<PositionComponent>();
-        _components.add<ParticleComponent>();
+        add_component<PositionComponent>();
+        add_component<ParticleComponent>();
+        add_component<XComponent>();
 
-        pecs::Entity e0 = _entities.create();
-        _components.create<PositionComponent>(e0);
-        _components.get<PositionComponent>(e0).x = 100;
-        _components.get<PositionComponent>(e0).x = 100;
-        _components.create<ParticleComponent>(e0);
-        _components.get<ParticleComponent>(e0).particles = 100;
+        pecs::Entity e0 = _data.create();
+        _data.create<PositionComponent>(e0);
+        _data.component<PositionComponent>(e0).x = 100;
+        _data.component<PositionComponent>(e0).y = 100;
+        _data.create<ParticleComponent>(e0);
+        _data.component<ParticleComponent>(e0).particles = 100;
 
-        pecs::Entity e1 = _entities.create();
-        _components.create<PositionComponent>(e1);
-        _components.get<PositionComponent>(e1).x = 300;
-        _components.get<PositionComponent>(e1).y = 300;
-        _components.create<ParticleComponent>(e1);
-        _components.get<ParticleComponent>(e1).particles = 300;
+        pecs::Entity e1 = _data.create();
+        _data.create<PositionComponent>(e1);
+        _data.component<PositionComponent>(e1).x = 300;
+        _data.component<PositionComponent>(e1).y = 300;
+        _data.create<ParticleComponent>(e1);
+        _data.component<ParticleComponent>(e1).particles = 300;
 
-        pecs::Entity e2 = _entities.create();
-        _components.create<PositionComponent>(e2);
-        _components.get<PositionComponent>(e2).x = 500;
-        _components.get<PositionComponent>(e2).y = 500;
-        _components.create<ParticleComponent>(e2);
-        _components.get<ParticleComponent>(e2).particles = 500;
+        pecs::Entity e2 = _data.create();
+        _data.create<PositionComponent>(e2);
+        _data.component<PositionComponent>(e2).x = 500;
+        _data.component<PositionComponent>(e2).y = 500;
+        _data.create<ParticleComponent>(e2);
+        _data.component<ParticleComponent>(e2).particles = 500;
+
+        pecs::Entity e3 = _data.create();
+        _data.create<XComponent>(e3);
     }
 
     void simulate(float dt)
     {
         update<ParticleSystem>(dt);
-        update<ParticleSystem>(dt);
+        update<XSystem>(dt);
+        update<AllSystem>(dt);
     }
 
     void render(float dt)

@@ -35,6 +35,8 @@ namespace pecs
         template <typename T>
         void remove(Entity entity);
 
+        void remove(Entity entity);
+
     private:
         template <typename T>
         Component<T>* component();
@@ -78,13 +80,13 @@ namespace pecs
     template<typename T>
     Component<T>* ComponentManager::component()
     {
-        return (Component<T>*)(_components.at(TypeId<Component<T>>));
+        return static_cast<Component<T>*>(_components.at(TypeId<Component<T>>));
     }
 
     template<typename T>
     const Component<T>* ComponentManager::component() const
     {
-        return (Component<T>*)(_components.at(TypeId<Component<T>>));
+        return static_cast<Component<T>*>(_components.at(TypeId<Component<T>>));
     }
 
 }

@@ -6,6 +6,8 @@
 #define ECS_COMPONENTBASE_H
 
 
+#include "Entity.h"
+
 namespace pecs
 {
 
@@ -13,6 +15,7 @@ namespace pecs
     {
     public:
         virtual ~ComponentBase() = default;
+        virtual void remove(Entity entity) = 0;
     };
 
 }

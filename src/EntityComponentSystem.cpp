@@ -8,7 +8,8 @@ namespace pecs
 {
 
     EntityComponentSystem::EntityComponentSystem()
+            : _views(_entities, _components), _data(_views.get(Signature<>()))
     {
-
     }
+
 }

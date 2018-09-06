@@ -25,7 +25,7 @@ namespace pecs
         void add(Args && ... args);
 
         template <typename T>
-        void update(EntityManager &entities, ComponentManager &components, float dt);
+        void update(ViewBase &view, float dt);
 
     private:
         template <typename T>
@@ -42,15 +42,15 @@ namespace pecs
     }
 
     template<typename T>
-    void SystemManager::update(EntityManager &entities, ComponentManager &components, float dt)
+    void SystemManager::update(ViewBase &view, float dt)
     {
-        system<T>()->update(entities, components, dt);
+        system<T>()->update(view, dt);
     }
 
     template<typename T>
-    T *SystemManager::system()
+    T* SystemManager::system()
     {
-        return (T*)(_systems.at(TypeId<T>));
+        return static_cast<T*>(_systems.at(TypeId<T>));
     }
 }
 

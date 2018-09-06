@@ -6,28 +6,30 @@
 #define ECS_COMPONENTSYSTEM_H
 
 
-#include <vector>
 #include "SystemBase.h"
-#include "Entity.h"
-#include "EntityManager.h"
-#include "ComponentManager.h"
+#include "Signature.h"
+#include "View.h"
 
 namespace pecs
 {
 
-    template <typename T>
+    template <typename Derived, typename ... Components>
     class System : public SystemBase
     {
     public:
         ~System() override = default;
 
-        void update(EntityManager &entities, ComponentManager &components, float dt);
+        void update(ViewBase &view, float dt);
+        static Signature<Components...> signature; // TODO inline BUG!!
     };
 
-    template<typename T>
-    void System<T>::update(EntityManager &entities, ComponentManager &components, float dt)
+    template<typename Derived, typename ... Components>
+    Signature<Components...> System<Derived, Components...>::signature;
+
+    template<typename Derived, typename ... Components>
+    void System<Derived, Components...>::update(ViewBase &view, float dt)
     {
-        static_cast<T*>(this)->_update(entities, components, dt);
+        static_cast<Derived*>(this)->_update(static_cast<View<Components...>&>(view), dt);
     }
 
 }

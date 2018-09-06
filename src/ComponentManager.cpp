@@ -20,4 +20,11 @@ namespace pecs
         _components.clear();
     }
 
+    void ComponentManager::remove(Entity entity)
+    {
+        for (auto component : _components) {
+            component.second->remove(entity);
+        }
+    }
+
 }

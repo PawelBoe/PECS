@@ -27,7 +27,7 @@ namespace pecs
 
         T& get(Entity entity);
 
-        void remove(Entity entity);
+        void remove(Entity entity) override;
 
     private:
         sparse_map<Entity, T, Entity::Hash> _data;

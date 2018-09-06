@@ -23,14 +23,15 @@ set(SOURCE_FILES
         src/ComponentManager.h
         src/Component.h
         src/ComponentBase.h
-        src/View.cpp
-        src/View.h
         src/util/sparse_set.h
         src/util/sparse_map.h
         src/Signature.h
         src/SignatureBase.h
         src/util/TypeId.h
-        )
+        src/View.h
+        src/ViewBase.h
+        src/ViewManager.cpp
+        src/ViewManager.h)
 
 add_executable(TESTS
         tests/TestMain.cpp
@@ -38,11 +39,11 @@ add_executable(TESTS
         tests/TestCase_entity.cpp
         tests/TestCase_signature.cpp
         tests/TestCase_view.cpp
+        tests/TestCase_ecs.cpp
         ${SOURCE_FILES}
         )
 
 
 add_executable(EXAMPLE_0
         examples/example_0.cpp
-        ${SOURCE_FILES}
-        )
+        ${SOURCE_FILES})

@@ -10,6 +10,7 @@
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "SystemManager.h"
+#include "ViewManager.h"
 
 namespace pecs
 {
@@ -19,19 +20,41 @@ namespace pecs
     public:
         EntityComponentSystem();
 
+        template<typename T, typename ... Args>
+        void add_system(Args && ... args);
+
+        template<typename T>
+        void add_component();
+
         template <typename T>
         void update(float dt);
 
-    protected:
+    private:
         EntityManager _entities;
         ComponentManager _components;
         SystemManager _systems;
+        ViewManager _views;
+
+    protected:
+        View<>& _data;
     };
+
+    template<typename T, typename ... Args>
+    void EntityComponentSystem::add_system(Args && ... args)
+    {
+        _systems.add<T>(std::forward<Args>(args) ...);
+    }
+
+    template<typename T>
+    void EntityComponentSystem::add_component()
+    {
+        _components.add<T>();
+    }
 
     template<typename T>
     void EntityComponentSystem::update(float dt)
     {
-        _systems.update<T>(_entities, _components, dt);
+        _systems.update<T>(_views.get(T::signature), dt);
     }
 
 }
