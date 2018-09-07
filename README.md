@@ -9,9 +9,11 @@ In a sense components define the data whereas the systems define the
 behavior of associated entities.
 
 This project implements a basic ECS in C++11 based on custom
-[sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/).
-Its prioritizes the ease of use and the support of more basic ECS
-features, so there is for example no event system at the moment. It was
+[sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/),
+[this article](http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy/)
+ and some C++ template magic. It prioritizes ease of
+ use and support of rather basic ECS features, so there is for
+ example no event handling at the moment. It was
 build from scratch mainly as a learning experience to make a type-save
 component and system management. But now it also serves as
 the basis for a game that I am loosely working on right now.
@@ -26,25 +28,29 @@ An entity simply represents an ID to distinguish itself from other entities.
 This ID/entity can be associated with data stored in components. So  an
 entity matches a certain signature, that is characterized by the set of
 components currently attached to it. A system on the other hand implements
-the logic that acts on a entitie's components. To announce what entities a
+the logic that acts on an entity's components. To announce what entities a
 system wants to operate on, it also has a signature. Thus by matching the
 right entity to the right system, entities with certain components get
 certain behavior.
 
-- Interaction between entities does not happen, because they do not act!
-- Interaction between components does not happen, because they do not act!
-- Interaction between systems does only happen through entity data!
+- Interaction between entities does not happen, because they do not act
+- Interaction between components does not happen, because they do not act
+- Interaction between systems does only happen through entity data
 
 You can of course take a different approach to this, just know that PECS
 was designed primarily with these points in mind.
 
 ### Entities
+TODO
 
 ### Components
+TODO
 
 ### Systems
+TODO
 
 ### EntityComponentSystem
+TODO
 
 ## Installation
 I have not thought about a build system yet so..
