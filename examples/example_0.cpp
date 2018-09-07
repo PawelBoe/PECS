@@ -3,9 +3,7 @@
 //
 
 #include <iostream>
-#include "EntityComponentSystem.h"
-#include "Signature.h"
-#include "View.h"
+#include "pecs.h"
 #include "SFML/Graphics.hpp"
 
 
@@ -34,6 +32,7 @@ public:
 
     void _update(pecs::View<PositionComponent> &view, float dt)
     {
+        // TODO render something
     }
 };
 

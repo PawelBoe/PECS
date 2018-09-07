@@ -2,7 +2,7 @@
 // Created by Pawel Boening on 01.09.18.
 //
 
-#include "EntityComponentSystem.h"
+#include "core/EntityComponentSystem.h"
 #include "catch.hpp"
 
 struct ComponentA
@@ -15,7 +15,10 @@ class SystemA : public pecs::System<SystemA, ComponentA>
 public:
     void _update(pecs::View<ComponentA> &view, float dt)
     {
-
+        for (auto entity : view)
+        {
+            view.component<ComponentA>(entity).A += 2 * dt;
+        }
     }
 };
 
@@ -26,16 +29,38 @@ public:
     {
         add_system<SystemA>();
         add_component<ComponentA>();
+
+        for (int i = 0; i < 13; i++) {
+            pecs::Entity entity = _data.create();
+            _data.create<ComponentA>(entity);
+            _data.component<ComponentA>(entity).A = 42;
+        }
     }
 
     void simulate(float dt)
     {
         update<SystemA>(dt);
     }
+
+    pecs::View<> & data()
+    {
+        return _data;
+    }
 };
 
 TEST_CASE( "EntityComponentSystem full test", "[EntityComponentSystem]" )
 {
     Application app;
-    app.simulate(1);
+    for (int i = 0; i < 10; i++) {
+        app.simulate(0.5);
+    }
+
+    auto &view = app.data();
+    int count = 0;
+    for (auto entity : view)
+    {
+        count ++;
+        REQUIRE( view.component<ComponentA>(entity).A == 52 );
+    }
+    REQUIRE( count == 13 );
 }

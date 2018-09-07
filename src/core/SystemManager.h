@@ -24,8 +24,8 @@ namespace pecs
         template <typename T, typename ... Args>
         void add(Args && ... args);
 
-        template <typename T>
-        void update(ViewBase &view, float dt);
+        template <typename T, typename ... Args>
+        void update(ViewBase &view, Args &&... args);
 
     private:
         template <typename T>
@@ -41,10 +41,10 @@ namespace pecs
             _systems[TypeId<T>] = new T(std::forward<Args>(args) ...);
     }
 
-    template<typename T>
-    void SystemManager::update(ViewBase &view, float dt)
+    template<typename T, typename ... Args>
+    void SystemManager::update(ViewBase &view, Args && ... args)
     {
-        system<T>()->update(view, dt);
+        system<T>()->update(view, std::forward<Args>(args) ...);
     }
 
     template<typename T>

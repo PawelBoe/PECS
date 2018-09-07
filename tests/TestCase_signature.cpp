@@ -4,7 +4,7 @@
 
 #include "catch.hpp"
 
-#include "../src/Signature.h"
+#include "core/Signature.h"
 
 
 TEST_CASE( "Signature creation and matching", "[Signature]" )

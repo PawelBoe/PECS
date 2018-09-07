@@ -4,7 +4,7 @@
 
 #include "catch.hpp"
 
-#include "../src/ViewManager.h"
+#include "core/ViewManager.h"
 
 
 TEST_CASE( "View external entity creation and matching", "[View]" )

@@ -26,8 +26,8 @@ namespace pecs
         template<typename T>
         void add_component();
 
-        template <typename T>
-        void update(float dt);
+        template <typename T, typename ... Args>
+        void update(Args &&... args);
 
     private:
         EntityManager _entities;
@@ -51,10 +51,10 @@ namespace pecs
         _components.add<T>();
     }
 
-    template<typename T>
-    void EntityComponentSystem::update(float dt)
+    template<typename T, typename ... Args>
+    void EntityComponentSystem::update(Args &&... args)
     {
-        _systems.update<T>(_views.get(T::signature), dt);
+        _systems.update<T>(_views.get(T::signature), std::forward<Args>(args) ...);
     }
 
 }

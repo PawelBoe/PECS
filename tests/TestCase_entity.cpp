@@ -4,8 +4,8 @@
 
 #include "catch.hpp"
 
-#include "../src/Entity.h"
-#include "../src/EntityManager.h"
+#include "core/Entity.h"
+#include "core/EntityManager.h"
 
 
 TEST_CASE( "Entity creation and deletion", "[Entity]" )
