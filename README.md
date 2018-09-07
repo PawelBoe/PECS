@@ -17,7 +17,26 @@ component and system management. But now it also serves as
 the basis for a game that I am loosely working on right now.
 
 ## Tutorial
-TODO
+PECS takes a very simplistic approach to ECS:
+- Entities are just identity
+- Components are just data
+- Systems are just behavior
+
+An entity simply represents an ID to distinguish itself from other entities.
+This ID/entity can be associated with data stored in components. So  an
+entity matches a certain signature, that is characterized by the set of
+components currently attached to it. A system on the other hand implements
+the logic that acts on a entitie's components. To announce what entities a
+system wants to operate on, it also has a signature. Thus by matching the
+right entity to the right system, entities with certain components get
+certain behavior.
+
+- Interaction between entities does not happen, because they do not act!
+- Interaction between components does not happen, because they do not act!
+- Interaction between systems does only happen through entity data!
+
+You can of course take a different approach to this, just know that PECS
+was designed primarily with these points in mind.
 
 ### Entities
 
