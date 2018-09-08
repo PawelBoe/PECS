@@ -205,10 +205,10 @@ class Application : public pecs::EntityComponentSystem
 public:
     Application()
     {
-        // assigne system to internal system manager
+        // assign user defined systems to internal system manager
         assign_system<MovementSystem>();
 
-        // assigne components to internal component manager
+        // assign user defined components to internal component manager
         assign_component<Position>();
         assign_component<Velocity>();
 
