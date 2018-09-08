@@ -96,38 +96,38 @@ class Application : public pecs::EntityComponentSystem
 public:
     explicit  Application(sf::RenderTarget &target)
     {
-        add_system<ParticleSystem>();
-        add_system<RenderSystem>(target);
-        add_system<XSystem>();
-        add_system<AllSystem>();
+        assign_system<ParticleSystem>();
+        assign_system<RenderSystem>(target);
+        assign_system<XSystem>();
+        assign_system<AllSystem>();
 
-        add_component<PositionComponent>();
-        add_component<ParticleComponent>();
-        add_component<XComponent>();
+        assign_component<PositionComponent>();
+        assign_component<ParticleComponent>();
+        assign_component<XComponent>();
 
         pecs::Entity e0 = _data.create();
-        _data.create<PositionComponent>(e0);
-        _data.component<PositionComponent>(e0).x = 100;
-        _data.component<PositionComponent>(e0).y = 100;
-        _data.create<ParticleComponent>(e0);
-        _data.component<ParticleComponent>(e0).particles = 100;
+        _data.add<PositionComponent>(e0);
+        _data.get<PositionComponent>(e0).x = 100;
+        _data.get<PositionComponent>(e0).y = 100;
+        _data.add<ParticleComponent>(e0);
+        _data.get<ParticleComponent>(e0).particles = 100;
 
         pecs::Entity e1 = _data.create();
-        _data.create<PositionComponent>(e1);
-        _data.component<PositionComponent>(e1).x = 300;
-        _data.component<PositionComponent>(e1).y = 300;
-        _data.create<ParticleComponent>(e1);
-        _data.component<ParticleComponent>(e1).particles = 300;
+        _data.add<PositionComponent>(e1);
+        _data.get<PositionComponent>(e1).x = 300;
+        _data.get<PositionComponent>(e1).y = 300;
+        _data.add<ParticleComponent>(e1);
+        _data.get<ParticleComponent>(e1).particles = 300;
 
         pecs::Entity e2 = _data.create();
-        _data.create<PositionComponent>(e2);
-        _data.component<PositionComponent>(e2).x = 500;
-        _data.component<PositionComponent>(e2).y = 500;
-        _data.create<ParticleComponent>(e2);
-        _data.component<ParticleComponent>(e2).particles = 500;
+        _data.add<PositionComponent>(e2);
+        _data.get<PositionComponent>(e2).x = 500;
+        _data.get<PositionComponent>(e2).y = 500;
+        _data.add<ParticleComponent>(e2);
+        _data.get<ParticleComponent>(e2).particles = 500;
 
         pecs::Entity e3 = _data.create();
-        _data.create<XComponent>(e3);
+        _data.add<XComponent>(e3);
     }
 
     void simulate(float dt)

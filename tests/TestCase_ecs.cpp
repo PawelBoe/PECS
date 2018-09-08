@@ -17,7 +17,7 @@ public:
     {
         for (auto entity : view)
         {
-            view.component<ComponentA>(entity).A += 2 * dt;
+            view.get<ComponentA>(entity).A += 2 * dt;
         }
     }
 };
@@ -27,13 +27,13 @@ class Application : public pecs::EntityComponentSystem
 public:
     explicit  Application()
     {
-        add_system<SystemA>();
-        add_component<ComponentA>();
+        assign_system<SystemA>();
+        assign_component<ComponentA>();
 
         for (int i = 0; i < 13; i++) {
             pecs::Entity entity = _data.create();
-            _data.create<ComponentA>(entity);
-            _data.component<ComponentA>(entity).A = 42;
+            _data.add<ComponentA>(entity);
+            _data.get<ComponentA>(entity).A = 42;
         }
     }
 
@@ -60,7 +60,7 @@ TEST_CASE( "EntityComponentSystem full test", "[EntityComponentSystem]" )
     for (auto entity : view)
     {
         count ++;
-        REQUIRE( view.component<ComponentA>(entity).A == 52 );
+        REQUIRE( view.get<ComponentA>(entity).A == 52 );
     }
     REQUIRE( count == 13 );
 }

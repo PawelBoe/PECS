@@ -17,14 +17,14 @@ TEST_CASE( "Signature creation and matching", "[Signature]" )
     pecs::Entity entity_1(1, 0);
 
     pecs::ComponentManager components;
-    components.add<Component_0>();
-    components.add<Component_1>();
-    components.add<Component_2>();
+    components.assign<Component_0>();
+    components.assign<Component_1>();
+    components.assign<Component_2>();
 
-    components.create<Component_0>(entity_0);
-    components.create<Component_1>(entity_0);
-    components.create<Component_0>(entity_1);
-    components.create<Component_2>(entity_1);
+    components.add<Component_0>(entity_0);
+    components.add<Component_1>(entity_0);
+    components.add<Component_0>(entity_1);
+    components.add<Component_2>(entity_1);
 
     pecs::Signature<Component_0> signature_0;
     pecs::Signature<Component_0, Component_1> signature_1;
@@ -41,8 +41,8 @@ TEST_CASE( "Signature creation and matching", "[Signature]" )
     REQUIRE( !signature_2.match(components, entity_1) );
     REQUIRE( signature_3.match(components, entity_1) );
 
-    components.create<Component_2>(entity_0);
-    components.create<Component_1>(entity_1);
+    components.add<Component_2>(entity_0);
+    components.add<Component_1>(entity_1);
 
     REQUIRE( signature_2.match(components, entity_0) );
     REQUIRE( signature_3.match(components, entity_0) );
@@ -74,13 +74,13 @@ TEST_CASE( "SignatureBase creation and matching", "[Signature][SignatureBase]" )
     pecs::Entity entity_1(1, 0);
 
     pecs::ComponentManager components;
-    components.add<Component_0>();
-    components.add<Component_1>();
-    components.add<Component_2>();
+    components.assign<Component_0>();
+    components.assign<Component_1>();
+    components.assign<Component_2>();
 
-    components.create<Component_0>(entity_0);
-    components.create<Component_1>(entity_0);
-    components.create<Component_2>(entity_0);
+    components.add<Component_0>(entity_0);
+    components.add<Component_1>(entity_0);
+    components.add<Component_2>(entity_0);
 
     std::vector<pecs::SignatureBase*> signatures;
 
@@ -100,9 +100,9 @@ TEST_CASE( "SignatureBase creation and matching", "[Signature][SignatureBase]" )
     components.remove<Component_0>(entity_0);
     components.remove<Component_1>(entity_0);
     components.remove<Component_2>(entity_0);
-    components.create<Component_0>(entity_1);
-    components.create<Component_1>(entity_1);
-    components.create<Component_2>(entity_1);
+    components.add<Component_0>(entity_1);
+    components.add<Component_1>(entity_1);
+    components.add<Component_2>(entity_1);
 
     for (auto signature : signatures) {
         REQUIRE( !signature->match(components, entity_0) );
@@ -122,8 +122,8 @@ TEST_CASE( "Empty signature creation ", "[Signature]" )
     pecs::Entity entity_0(0, 0);
 
     pecs::ComponentManager components;
-    components.add<Component_0>();
-    components.create<Component_0>(entity_0);
+    components.assign<Component_0>();
+    components.add<Component_0>(entity_0);
 
     pecs::Signature<> signature_0;
 

@@ -41,34 +41,34 @@ this to your source files:
 All entities that are used anywhere should first be created using the
 `pecs::EntityManager`:
 ``` c++
-    pecs::EntityManager entity_manager;
-    pecs::Entity entity = entity_manager.create();
+pecs::EntityManager entity_manager;
+pecs::Entity entity = entity_manager.create();
 ```
 
 To access all created entities, you can iterate over the entity manager
 in a for loop like this:
 ``` c++
-    for (pecs::Entity e : entity_manager) {
-        // do something with e
-    }
+for (pecs::Entity e : entity_manager) {
+    // do something with e
+}
 ```
 
 You can also query for a specific entity`s existence within
 the EntityManager or remove it:
 ``` c++
-    entity_manager.exists(entity); // true
+entity_manager.exists(entity); // true
 
-    entity_manager.remove(entity);
+entity_manager.remove(entity);
 
-    entity_manager.exists(entity); // false
+entity_manager.exists(entity); // false
 ```
 
 Creating an entity on your own works like this:
 ``` c++
-    pecs::Entity entity(42, 13);
+pecs::Entity entity(42, 13);
 
-    // entity.index() == 42
-    // entity.version() == 13
+// entity.index() == 42
+// entity.version() == 13
 ```
 
 Internally an entity only has single 32 bit number which contains two
@@ -83,9 +83,62 @@ fear dereferencing an invalid pointer.
 
 
 ### Components
-TODO
+As mentioned in my guiding principles above, components should be POD
+(plain old data). This means that no behavior or logic is attached to
+them and that behavior is implemented in systems which communicate via
+the state of the components' data.
+
+Here is a basic example of the definition of some common components:
+``` c++
+struct Position
+{
+    int x;
+    int y
+};
+
+struct Velocity
+{
+    int dx;
+    int dx
+};
+```
+
+To be able to use a component and to be able to give it to an entity, it
+first must be assigned to a `pecs::ComponentManager`:
+``` c++
+pecs::Entity entity = entity_manager.create();
+pecs::ComponentManager component_manager;
+
+// assign Position and Velocity to the manager
+component_manager.assign<Position>();
+component_manager.assign<Velocity>();
+
+// create a Position and a Velocity component for the entity
+component_manager.add<Position>(entity);
+component_manager.add<Velocity>(entity);
+```
+
+Now getting the data of the component or changing it is easy:
+``` c++
+component_manager.get<Position>(entity).x = 1;
+component_manager.get<Position>(entity).y = 1;
+
+component_manager.get<Velocity>(entity).dx = 1;
+component_manager.get<Velocity>(entity).dy = 1;
+```
+
+Testing for a components existence and also its removal work analogously:
+``` c++
+component_manager.exists<Position>(entity); // true
+component_manager.remove<Position>(entity);
+component_manager.exists<Position>(entity); // false
+```
+
 
 ### Systems
+TODO
+
+### Views
 TODO
 
 ### EntityComponentSystem

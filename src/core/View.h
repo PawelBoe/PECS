@@ -26,11 +26,11 @@ namespace pecs
         void remove(Entity entity);
 
         template <typename T>
-        void create(Entity entity);
+        void add(Entity entity);
         template <typename T>
         void remove(Entity entity);
         template <typename T>
-        T& component(Entity entity);
+        T& get(Entity entity);
 
         using iterator = Entity*;
         const iterator begin() const;
@@ -77,9 +77,9 @@ namespace pecs
 
     template<typename... Ts>
     template<typename T>
-    void View<Ts...>::create(Entity entity)
+    void View<Ts...>::add(Entity entity)
     {
-        _components.create<T>(entity);
+        _components.add<T>(entity);
         _dirty(entity);
     }
 
@@ -93,7 +93,7 @@ namespace pecs
 
     template<typename... Ts>
     template<typename T>
-    T &View<Ts...>::component(Entity entity)
+    T &View<Ts...>::get(Entity entity)
     {
         return _components.get<T>(entity);
     }
@@ -154,9 +154,9 @@ namespace pecs
         }
 
         template <typename T>
-        void create(Entity entity)
+        void add(Entity entity)
         {
-            _components.create<T>(entity);
+            _components.add<T>(entity);
             _dirty(entity);
         }
 
@@ -168,7 +168,7 @@ namespace pecs
         }
 
         template <typename T>
-        T& component(Entity entity)
+        T& get(Entity entity)
         {
             return _components.get<T>(entity);
         }

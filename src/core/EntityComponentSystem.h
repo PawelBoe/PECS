@@ -21,10 +21,10 @@ namespace pecs
         EntityComponentSystem();
 
         template<typename T, typename ... Args>
-        void add_system(Args && ... args);
+        void assign_system(Args && ... args);
 
         template<typename T>
-        void add_component();
+        void assign_component();
 
         template <typename T, typename ... Args>
         void update(Args &&... args);
@@ -40,15 +40,15 @@ namespace pecs
     };
 
     template<typename T, typename ... Args>
-    void EntityComponentSystem::add_system(Args && ... args)
+    void EntityComponentSystem::assign_system(Args && ... args)
     {
-        _systems.add<T>(std::forward<Args>(args) ...);
+        _systems.assign<T>(std::forward<Args>(args) ...);
     }
 
     template<typename T>
-    void EntityComponentSystem::add_component()
+    void EntityComponentSystem::assign_component()
     {
-        _components.add<T>();
+        _components.assign<T>();
     }
 
     template<typename T, typename ... Args>

@@ -21,7 +21,7 @@ namespace pecs
     public:
         ~Component() override = default;
 
-        void create(Entity entity);
+        void add(Entity entity);
 
         bool exists(Entity entity) const;
 
@@ -34,7 +34,7 @@ namespace pecs
     };
 
     template<typename T>
-    void Component<T>::create(Entity entity)
+    void Component<T>::add(Entity entity)
     {
         _data.add(entity, T());
     }

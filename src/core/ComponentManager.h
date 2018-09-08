@@ -21,10 +21,10 @@ namespace pecs
         ~ComponentManager();
 
         template <typename T>
-        void add();
+        void assign();
 
         template <typename T>
-        void create(Entity entity);
+        void add(Entity entity);
 
         template <typename T>
         bool exists(Entity entity) const;
@@ -47,7 +47,7 @@ namespace pecs
     };
 
     template<typename T>
-    void ComponentManager::add()
+    void ComponentManager::assign()
     {
         if (_components.find(TypeId<Component<T>>) == _components.end())
             _components[TypeId<Component<T>>] = new Component<T>;
@@ -66,9 +66,9 @@ namespace pecs
     }
 
     template<typename T>
-    void ComponentManager::create(Entity entity)
+    void ComponentManager::add(Entity entity)
     {
-        component<T>()->create(entity);
+        component<T>()->add(entity);
     }
 
     template<typename T>

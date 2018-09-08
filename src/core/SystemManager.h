@@ -22,7 +22,7 @@ namespace pecs
         ~SystemManager();
 
         template <typename T, typename ... Args>
-        void add(Args && ... args);
+        void assign(Args && ... args);
 
         template <typename T, typename ... Args>
         void update(ViewBase &view, Args &&... args);
@@ -35,7 +35,7 @@ namespace pecs
     };
 
     template<typename T, typename... Args>
-    void SystemManager::add(Args &&... args)
+    void SystemManager::assign(Args &&... args)
     {
         if (_systems.find(TypeId<T>) == _systems.end())
             _systems[TypeId<T>] = new T(std::forward<Args>(args) ...);
