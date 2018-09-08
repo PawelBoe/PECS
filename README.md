@@ -71,7 +71,7 @@ pecs::Entity entity(42, 13);
 // entity.version() == 13
 ```
 
-Internally an entity only has single 32 bit number which contains two
+Internally an entity only has a single 32 bit number which contains two
 parts: 24 bit for index and 8 bit for version. The index is the entity's
 identity, the "thing" that it actually "is". The version serves as a
 way to invalidate an entity once it is removed. This way any dangling
@@ -106,7 +106,6 @@ struct Velocity
 To be able to use a component and to be able to give it to an entity, it
 first must be assigned to a `pecs::ComponentManager`:
 ``` c++
-pecs::Entity entity = entity_manager.create();
 pecs::ComponentManager component_manager;
 
 // assign Position and Velocity to the manager
@@ -135,14 +134,101 @@ component_manager.exists<Position>(entity); // false
 ```
 
 
-### Systems
-TODO
-
 ### Views
-TODO
+Views are a mechanism to abstract away the use of the different managers
+mentioned earlier. They provide a limited access to components and
+entities, based on a `pecs::Signature<Components..>`. As entities get
+created and changed, the different views get notified of that and if the
+corresponding entity now matches the signature, it gets added to the
+view's cache.
+
+Views can be looped over and they provide a complete interface to
+component and entity managers:
+
+``` c++
+    pecs::ViewManager view_manager(entity_manager, component_manager);
+
+    pecs::Signature<Position, Velocity> signature;
+
+    pecs::View<Position, Velocity> &view = view_manager.get<signature>();
+
+    for (pecs::Entity e : view) {
+        view.get<Position>(e) = 42; // change value of component
+        view.remove<Velocity>(e); // remove component
+
+        // ..
+
+        pecs::Entity e = view.create(); // create new entity
+        view.add<Position>(); // add component
+        view.remove(e); // remove entity
+
+        // ..
+    }
+```
+
+
+### Systems
+To implement logic and behavior, systems are used. They process entities,
+based on a signature declaration that is provided as a series of template
+parameters to their superclass like so:
+
+``` c++
+// [Position, Velocity] are the signature here..
+class MovementSystem : public pecs::System<MovementSystem, Position, Velocity>
+{
+    void update(pecs::View<Position, Velocity> &view, float dt)
+    {
+        for (pecs::Entity e : view) {
+            view.get<Position>(e).x = view.get<Velocity>(e).x * dt;
+            view.get<Position>(e).y = view.get<Velocity>(e).y * dt;
+        }
+    }
+};
+```
+
+Each system needs to provide an `update()` method that receives a `pecs::View<Components...>`
+according to its signature, as seen above. Also a variable number of
+arguments can follow, like in this example `float dt`.
+
 
 ### EntityComponentSystem
-TODO
+Finally there exists `ecs::EntityComponentSystem` which serves as a wrapper
+to all previously discussed concepts. It allows to tie together all systems,
+components and to initialize some entities within the ECS. Notice that
+the helper methods `assign_system()` and `assign_component` are used to
+register the user-provided parts to the ECS. Furthermore there is a protected
+member `_data` which represents a `pecs::View<>` that allows for unconstrained
+access to all entities in the ECS.
+```c++
+class Application : public pecs::EntityComponentSystem
+{
+public:
+    Application()
+    {
+        // assigne system to internal system manager
+        assign_system<MovementSystem>();
+
+        // assigne components to internal component manager
+        assign_component<Position>();
+        assign_component<Velocity>();
+
+        // initialize some world data
+        pecs::Entity e0 = _data.create();
+        _data.add<Position>(e0);
+        _data.get<Position>(e0).x = 42;
+        _data.get<Position>(e0).y = 42;
+        _data.add<Velocity>(e0);
+        _data.get<Velocity>(e0).x = 42;
+        _data.get<Velocity>(e0).y = 42;
+    }
+
+    void simulate(float dt)
+    {
+        // perform a single iteration over systems
+        update<MovementSystem>(dt);
+    }
+};
+```
 
 ## Installation
 I have not thought about a build system yet so..
@@ -151,5 +237,6 @@ you want them to be, include `pecs.h` and you are good to go!
 
 ## Tests and Examples
 TODO How to compile examples
+
 TODO what do they show
 
