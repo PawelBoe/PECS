@@ -213,13 +213,13 @@ public:
         assign_component<Velocity>();
 
         // initialize some world data
-        pecs::Entity e0 = _data.create();
-        _data.add<Position>(e0);
-        _data.get<Position>(e0).x = 42;
-        _data.get<Position>(e0).y = 42;
-        _data.add<Velocity>(e0);
-        _data.get<Velocity>(e0).x = 42;
-        _data.get<Velocity>(e0).y = 42;
+        pecs::Entity e = _data.create();
+        _data.add<Position>(e);
+        _data.get<Position>(e).x = 42;
+        _data.get<Position>(e).y = 42;
+        _data.add<Velocity>(e);
+        _data.get<Velocity>(e).x = 42;
+        _data.get<Velocity>(e).y = 42;
     }
 
     void simulate(float dt)
