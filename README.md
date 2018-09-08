@@ -173,7 +173,7 @@ based on a signature declaration that is provided as a series of template
 parameters to their superclass like so:
 
 ``` c++
-// [Position, Velocity] are the signature here..
+// pecs::Signature<Position, Velocity> is the internal signature here..
 class MovementSystem : public pecs::System<MovementSystem, Position, Velocity>
 {
     void update(pecs::View<Position, Velocity> &view, float dt)
@@ -195,10 +195,10 @@ arguments can follow, like in this example `float dt`.
 Finally there exists `ecs::EntityComponentSystem` which serves as a wrapper
 to all previously discussed concepts. It allows to tie together all systems,
 components and to initialize some entities within the ECS. Notice that
-the helper methods `assign_system()` and `assign_component` are used to
-register the user-provided parts to the ECS. Furthermore there is a protected
-member `_data` which represents a `pecs::View<>` that allows for unconstrained
-access to all entities in the ECS.
+the helper methods `assign_system<System>()` and `assign_component<Component>()`
+are used to register the user-provided parts to the ECS. Furthermore there
+is a protected member `_data` which represents a `pecs::View<>` that allows
+for unconstrained access to all entities in the ECS.
 ```c++
 class Application : public pecs::EntityComponentSystem
 {
