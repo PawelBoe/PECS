@@ -1,13 +1,4 @@
 # PECS - Pawel's Entity Component System
-An entity component system (ECS) is a design pattern that makes
-use of composition rather than inheritance to achieve code reuse and
-polymorphic behavior. Entities consist of multiple components. These
-components can be seen as the attributes that define the data an entity
-has. Systems operate on these entities, being able to modify, create
-and remove components and entities.
-In a sense components define the data whereas the systems define the
-behavior of associated entities.
-
 This project implements a basic ECS in C++11 based on custom
 [sparse sets](https://programmingpraxis.com/2012/03/09/sparse-sets/),
 [this article](http://cowboyprogramming.com/2007/01/05/evolve-your-heirachy/)
@@ -16,9 +7,8 @@ This project implements a basic ECS in C++11 based on custom
  example no event handling at the moment. It was
 build from scratch mainly as a learning experience to make a type-save
 component and system management. But now it also serves as
-the basis for a game that I am loosely working on right now.
+the basis for some games that I am loosely working on right now.
 
-## Tutorial
 PECS takes a very simplistic approach to ECS:
 - Entities are just identity
 - Components are just data
@@ -40,8 +30,57 @@ certain behavior.
 You can of course take a different approach to this, just know that PECS
 was designed primarily with these points in mind.
 
+## Tutorial
+To get started put the `/src` directory in your include path and add
+this to your source files:
+``` c++
+#include "pecs.h"
+```
+
 ### Entities
-TODO
+All entities that are used anywhere should first be created using the
+`pecs::EntityManager`:
+``` c++
+    pecs::EntityManager entity_manager;
+    pecs::Entity entity = entity_manager.create();
+```
+
+To access all created entities, you can iterate over the entity manager
+in a for loop like this:
+``` c++
+    for (pecs::Entity e : entity_manager) {
+        // do something with e
+    }
+```
+
+You can also query for a specific entity`s existence within
+the EntityManager or remove it:
+``` c++
+    entity_manager.exists(entity); // true
+
+    entity_manager.remove(entity);
+
+    entity_manager.exists(entity); // false
+```
+
+Creating an entity on your own works like this:
+``` c++
+    pecs::Entity entity(42, 13);
+
+    // entity.index() == 42
+    // entity.version() == 13
+```
+
+Internally an entity only has single 32 bit number which contains two
+parts: 24 bit for index and 8 bit for version. The index is the entity's
+identity, the "thing" that it actually "is". The version serves as a
+way to invalidate an entity once it is removed. This way any dangling
+references remaining somewhere in systems or components are different
+from a newly created entity with the same index for example (since entity
+indices are reusable). Also this actually allows to keep invalid entities
+around until they are ready to be removed by the user, without having to
+fear dereferencing an invalid pointer.
+
 
 ### Components
 TODO
