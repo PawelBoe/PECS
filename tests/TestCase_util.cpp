@@ -4,9 +4,10 @@
 
 #include "catch.hpp"
 
-#include "../src/util/sparse_set.h"
-#include "../src/util/sparse_map.h"
+#include "util/sparse_set.h"
+#include "util/sparse_map.h"
 #include "core/Entity.h"
+
 
 TEST_CASE( "sparse_set creation and deletion of 1M entities", "[sparse_set]")
 {
