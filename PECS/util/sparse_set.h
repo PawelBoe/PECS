@@ -77,8 +77,8 @@ namespace pecs
         T* new_dense = new T[new_cap];
 
         unsigned int min_cap = std::min(_capacity, new_cap);
-        std::memcpy(new_sparse, _sparse, min_cap * sizeof(unsigned int));
-        std::memcpy(new_dense, _dense, min_cap * sizeof(T));
+        std::copy(_sparse, _sparse + min_cap, new_sparse);
+        std::copy(_dense, _dense + min_cap, new_dense);
 
         delete [] _sparse;
         delete [] _dense;

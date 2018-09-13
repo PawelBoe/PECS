@@ -31,7 +31,7 @@ You can of course take a different approach to this, just know that PECS
 was designed primarily with these points in mind.
 
 ## Tutorial
-To get started put the `/src` directory in your include path and add
+To get started put the `/PECS` directory in your include path and add
 this to your source files:
 ``` c++
 #include "pecs.h"
@@ -232,8 +232,8 @@ public:
 
 ## Installation
 I have not thought about a build system yet so..
-Just clone the current version and copy the contents of `/src` wherever
-you want them to be, include `pecs.h` and you are good to go!
+Just clone the current version and copy the folder `/PECS` wherever
+you want it to be, include `pecs.h` and you are good to go!
 
 ## Tests and Examples
 TODO How to compile examples

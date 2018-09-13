@@ -5,34 +5,34 @@ set(CMAKE_CXX_STANDARD 11)
 set(CMAKE_CXX_FLAGS "-lsfml-graphics -lsfml-system -lsfml-window  -lsfml-audio")  # TODO make platform independent
 
 set(CATCH_DIR "tests/catch")
-set(INCLUDE_DIR "src/")
+set(INCLUDE_DIR "PECS/")
 include_directories(${CATCH_DIR} ${INCLUDE_DIR})
 
 set(SOURCE_FILES
-        src/core/EntityManager.cpp
-        src/core/EntityManager.h
-        src/core/EntityComponentSystem.cpp
-        src/core/EntityComponentSystem.h
-        src/core/System.h
-        src/core/SystemBase.h
-        src/core/SystemManager.cpp
-        src/core/SystemManager.h
-        src/core/Entity.h
-        src/core/Entity.cpp
-        src/core/ComponentManager.cpp
-        src/core/ComponentManager.h
-        src/core/Component.h
-        src/core/ComponentBase.h
-        src/util/sparse_set.h
-        src/util/sparse_map.h
-        src/core/Signature.h
-        src/core/SignatureBase.h
-        src/util/TypeId.h
-        src/core/View.h
-        src/core/ViewBase.h
-        src/core/ViewManager.cpp
-        src/core/ViewManager.h
-        src/pecs.h
+        PECS/core/EntityManager.cpp
+        PECS/core/EntityManager.h
+        PECS/core/EntityComponentSystem.cpp
+        PECS/core/EntityComponentSystem.h
+        PECS/core/System.h
+        PECS/core/SystemBase.h
+        PECS/core/SystemManager.cpp
+        PECS/core/SystemManager.h
+        PECS/core/Entity.h
+        PECS/core/Entity.cpp
+        PECS/core/ComponentManager.cpp
+        PECS/core/ComponentManager.h
+        PECS/core/Component.h
+        PECS/core/ComponentBase.h
+        PECS/util/sparse_set.h
+        PECS/util/sparse_map.h
+        PECS/core/Signature.h
+        PECS/core/SignatureBase.h
+        PECS/util/TypeId.h
+        PECS/core/View.h
+        PECS/core/ViewBase.h
+        PECS/core/ViewManager.cpp
+        PECS/core/ViewManager.h
+        PECS/pecs.h
         )
 
 add_executable(TESTS
@@ -48,5 +48,10 @@ add_executable(TESTS
 
 add_executable(EXAMPLE_0
         examples/example_0.cpp
+        ${SOURCE_FILES}
+        )
+
+add_executable(EXAMPLE_1
+        examples/example_1.cpp
         ${SOURCE_FILES}
         )
