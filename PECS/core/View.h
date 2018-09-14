@@ -8,7 +8,7 @@
 
 #include "ViewBase.h"
 #include "util/TypeId.h"
-#include "util/sparse_set.h"
+#include "PSSET/sparse_set.h"
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "Signature.h"
@@ -45,7 +45,7 @@ namespace pecs
         ComponentManager &_components;
         Signature<Ts...> _signature;
         std::unordered_map<TypeId_t, ViewBase*> &_views;
-        sparse_set<Entity, Entity::Hash> _view_entities;
+        psset::sparse_set<Entity, Entity::Hash> _view_entities;
     };
 
     template<typename... Ts>

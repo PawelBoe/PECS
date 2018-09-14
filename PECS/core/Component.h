@@ -10,7 +10,7 @@
 #include <vector>
 #include "ComponentBase.h"
 #include "Entity.h"
-#include "util/sparse_map.h"
+#include "PSSET/sparse_map.h"
 
 namespace pecs
 {
@@ -30,7 +30,7 @@ namespace pecs
         void remove(Entity entity) override;
 
     private:
-        sparse_map<Entity, T, Entity::Hash> _data;
+        psset::sparse_map<Entity, T, Entity::Hash> _data;
     };
 
     template<typename T>

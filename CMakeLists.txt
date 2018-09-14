@@ -6,7 +6,8 @@ set(CMAKE_CXX_FLAGS "-lsfml-graphics -lsfml-system -lsfml-window  -lsfml-audio")
 
 set(CATCH_DIR "tests/catch")
 set(INCLUDE_DIR "PECS/")
-include_directories(${CATCH_DIR} ${INCLUDE_DIR})
+set(PSSET_DIR "lib/PSSET/")
+include_directories(${CATCH_DIR} ${PSSET_DIR} ${INCLUDE_DIR})
 
 set(SOURCE_FILES
         PECS/core/EntityManager.cpp
@@ -23,8 +24,6 @@ set(SOURCE_FILES
         PECS/core/ComponentManager.h
         PECS/core/Component.h
         PECS/core/ComponentBase.h
-        PECS/util/sparse_set.h
-        PECS/util/sparse_map.h
         PECS/core/Signature.h
         PECS/core/SignatureBase.h
         PECS/util/TypeId.h
@@ -33,11 +32,13 @@ set(SOURCE_FILES
         PECS/core/ViewManager.cpp
         PECS/core/ViewManager.h
         PECS/pecs.h
+
+        lib/PSSET/PSSET/sparse_set.h
+        lib/PSSET/PSSET/sparse_map.h
         )
 
 add_executable(TESTS
         tests/TestMain.cpp
-        tests/TestCase_util.cpp
         tests/TestCase_entity.cpp
         tests/TestCase_signature.cpp
         tests/TestCase_view.cpp

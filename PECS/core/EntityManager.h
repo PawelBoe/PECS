@@ -8,7 +8,7 @@
 #include <vector>
 #include <queue>
 #include "Entity.h"
-#include "util/sparse_set.h"
+#include "PSSET/sparse_set.h"
 
 
 namespace pecs
@@ -29,7 +29,7 @@ namespace pecs
 
     private:
         EntityIndex _index_counter = 0;
-        sparse_set<Entity, Entity::Hash> _used;
+        psset::sparse_set<Entity, Entity::Hash> _used;
         std::vector<Entity> _unused;
     };
 
