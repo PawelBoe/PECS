@@ -232,8 +232,9 @@ public:
 
 ## Installation
 I have not thought about a build system yet so..
-Just clone the current version and copy the folder `/PECS` wherever
-you want it to be, include `pecs.h` and you are good to go!
+Just clone the current version (with submodules) and copy the
+folder `/PECS` wherever you want it to be, include `pecs.h` and
+you are good to go!
 
 ## Tests and Examples
 TODO How to compile examples
