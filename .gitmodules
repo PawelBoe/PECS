@@ -1,3 +1,3 @@
-[submodule "lib/PSSET"]
-	path = lib/PSSET
+[submodule "PECS/lib/PSSET"]
+	path = PECS/lib/PSSET
 	url = git@github.com:PawelBoe/PSSET.git

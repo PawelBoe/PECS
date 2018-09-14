@@ -6,7 +6,7 @@ set(CMAKE_CXX_FLAGS "-lsfml-graphics -lsfml-system -lsfml-window  -lsfml-audio")
 
 set(CATCH_DIR "tests/catch")
 set(INCLUDE_DIR "PECS/")
-set(PSSET_DIR "lib/PSSET/")
+set(PSSET_DIR "PECS/lib/PSSET/")
 include_directories(${CATCH_DIR} ${PSSET_DIR} ${INCLUDE_DIR})
 
 set(SOURCE_FILES
@@ -33,8 +33,8 @@ set(SOURCE_FILES
         PECS/core/ViewManager.h
         PECS/pecs.h
 
-        lib/PSSET/PSSET/sparse_set.h
-        lib/PSSET/PSSET/sparse_map.h
+        PECS/lib/PSSET/PSSET/sparse_set.h
+        PECS/lib/PSSET/PSSET/sparse_map.h
         )
 
 add_executable(TESTS
