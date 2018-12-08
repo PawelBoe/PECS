@@ -159,7 +159,7 @@ component and entity managers:
         // ..
 
         pecs::Entity e = view.create(); // create new entity
-        view.add<Position>(); // add component
+        view.add<Position>(e); // add component
         view.remove(e); // remove entity
 
         // ..
@@ -179,8 +179,8 @@ class MovementSystem : public pecs::System<MovementSystem, Position, Velocity>
     void update(pecs::View<Position, Velocity> &view, float dt)
     {
         for (pecs::Entity e : view) {
-            view.get<Position>(e).x = view.get<Velocity>(e).x * dt;
-            view.get<Position>(e).y = view.get<Velocity>(e).y * dt;
+            view.get<Position>(e).x += view.get<Velocity>(e).x * dt;
+            view.get<Position>(e).y += view.get<Velocity>(e).y * dt;
         }
     }
 };
