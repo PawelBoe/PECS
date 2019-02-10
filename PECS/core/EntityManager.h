@@ -24,8 +24,8 @@ namespace pecs
         void remove(Entity entity);
 
         using iterator = Entity*;
-        iterator begin() const;
-        iterator end() const;
+        const iterator begin() const;
+        const iterator end() const;
 
     private:
         EntityIndex _index_counter = 0;

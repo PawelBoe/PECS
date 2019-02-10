@@ -48,12 +48,12 @@ namespace pecs
         }
     }
 
-    EntityManager::iterator EntityManager::begin() const
+    const EntityManager::iterator EntityManager::begin() const
     {
         return _used.begin();
     }
 
-    EntityManager::iterator EntityManager::end() const
+    const EntityManager::iterator EntityManager::end() const
     {
         return _used.end();
     }
