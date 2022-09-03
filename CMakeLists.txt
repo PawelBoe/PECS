@@ -2,11 +2,14 @@ cmake_minimum_required(VERSION 3.10)
 project(ECS)
 
 set(CMAKE_CXX_STANDARD 11)
-set(CMAKE_CXX_FLAGS "-lsfml-graphics -lsfml-system -lsfml-window  -lsfml-audio")  # TODO make platform independent
+
+find_package(SFML 2.5.1
+  COMPONENTS 
+    system window graphics network audio REQUIRED)
+
 
 set(CATCH_DIR "tests/catch")
 set(INCLUDE_DIR "PECS/")
-set(PSSET_DIR "PECS/lib/PSSET/")
 include_directories(${CATCH_DIR} ${PSSET_DIR} ${INCLUDE_DIR})
 
 set(SOURCE_FILES
@@ -33,8 +36,7 @@ set(SOURCE_FILES
         PECS/core/ViewManager.h
         PECS/pecs.h
 
-        PECS/lib/PSSET/PSSET/sparse_set.h
-        PECS/lib/PSSET/PSSET/sparse_map.h
+        PECS/lib/psset.h
         )
 
 add_executable(TESTS
@@ -56,3 +58,18 @@ add_executable(EXAMPLE_1
         examples/example_1.cpp
         ${SOURCE_FILES}
         )
+
+target_link_libraries(TESTS sfml-graphics)
+target_link_libraries(TESTS sfml-system)
+target_link_libraries(TESTS sfml-window)
+target_link_libraries(TESTS sfml-audio)
+
+target_link_libraries(EXAMPLE_0 sfml-graphics)
+target_link_libraries(EXAMPLE_0 sfml-system)
+target_link_libraries(EXAMPLE_0 sfml-window)
+target_link_libraries(EXAMPLE_0 sfml-audio)
+
+target_link_libraries(EXAMPLE_1 sfml-graphics)
+target_link_libraries(EXAMPLE_1 sfml-system)
+target_link_libraries(EXAMPLE_1 sfml-window)
+target_link_libraries(EXAMPLE_1 sfml-audio)

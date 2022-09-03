@@ -1,0 +1,5 @@
+/Users/pawel/Documents/Programming/c++/PECS/build/CMakeFiles/EXAMPLE_1.dir
+/Users/pawel/Documents/Programming/c++/PECS/build/CMakeFiles/EXAMPLE_0.dir
+/Users/pawel/Documents/Programming/c++/PECS/build/CMakeFiles/rebuild_cache.dir
+/Users/pawel/Documents/Programming/c++/PECS/build/CMakeFiles/edit_cache.dir
+/Users/pawel/Documents/Programming/c++/PECS/build/CMakeFiles/TESTS.dir

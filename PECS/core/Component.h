@@ -10,7 +10,7 @@
 #include <vector>
 #include "ComponentBase.h"
 #include "Entity.h"
-#include "PSSET/sparse_map.h"
+#include "lib/psset.h"
 
 namespace pecs
 {

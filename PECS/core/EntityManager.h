@@ -8,7 +8,7 @@
 #include <vector>
 #include <queue>
 #include "Entity.h"
-#include "PSSET/sparse_set.h"
+#include "lib/psset.h"
 
 
 namespace pecs

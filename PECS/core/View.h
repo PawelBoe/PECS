@@ -8,7 +8,7 @@
 
 #include "ViewBase.h"
 #include "util/TypeId.h"
-#include "PSSET/sparse_set.h"
+#include "lib/psset.h"
 #include "EntityManager.h"
 #include "ComponentManager.h"
 #include "Signature.h"
